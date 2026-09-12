@@ -49,6 +49,7 @@ main section{padding:52px 0}
 .linkcard .go{color:var(--blue);font-size:13px;font-weight:900}
 .linkcard .go:after{content:"　→"}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cards.cards-4{grid-template-columns:repeat(4,1fr)}
 .card{display:flex;flex-direction:column;padding:24px;background:#fff;border:1px solid var(--line);border-radius:14px}
 .card small{color:var(--blue);font-weight:900;letter-spacing:.08em;font-size:11px}
 .card h3{margin:8px 0 10px;font-size:19px}
@@ -85,8 +86,8 @@ footer{background:#111820;color:#fff}
 .footer-main p,.footer-main a{color:#aeb8c5;font-size:12px}
 .footer-col b,.footer-col a{display:block;margin-bottom:10px}
 .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:18px 0 26px;border-top:1px solid #333c47;color:#8e99a7;font-size:10px}
-@media(max-width:900px){.linkcards{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr 1fr}.org-chart{grid-template-columns:1fr 1fr}.staff-grid{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr 1fr}}
-@media(max-width:620px){.wrap{width:min(100% - 28px,1080px)}main section{padding:40px 0}.linkcards,.cards,.org-chart{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr}.footer-bottom{display:block}.staff-card{flex-direction:column}}
+@media(max-width:900px){.linkcards{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr 1fr}.cards.cards-4{grid-template-columns:1fr 1fr}.org-chart{grid-template-columns:1fr 1fr}.staff-grid{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.wrap{width:min(100% - 28px,1080px)}main section{padding:40px 0}.linkcards,.cards,.cards.cards-4,.org-chart{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr}.footer-bottom{display:block}.staff-card{flex-direction:column}}
 
 </style>
 </head>
@@ -137,8 +138,14 @@ footer{background:#111820;color:#fff}
 </div></section>
 
 <section id="policy"><div class="wrap">
-<div class="section-head"><span class="kicker">TRUST &amp; SAFETY</span><h2>安心して読んでいただくために</h2>
-<p>個人運営のプロジェクトとして、次のことを大切にしています。</p></div>
+<div class="section-head"><span class="kicker">TRUST &amp; SAFETY</span><h2>安心への取り組み</h2>
+<p>便利さより先に、安全、権利、透明性を確認します。扱わない領域も明確にします。</p></div>
+<div class="cards cards-4">
+<article class="card"><small>01</small><h3>データを集めない</h3><p>可能な限りブラウザ内で処理し、入力内容をサーバーへ送らない設計にします。</p></article>
+<article class="card"><small>02</small><h3>本業と分離する</h3><p>勤務先の設備、時間、資料、コード、情報は一切使いません。</p></article>
+<article class="card"><small>03</small><h3>危険領域を避ける</h3><p>医療、法律、投資、安全制御など、誤りが重大な判断につながる領域を扱いません。</p></article>
+<article class="card"><small>04</small><h3>広告を明示する</h3><p>広告や紹介リンクは、利用者が広告だと分かるよう明確に表示します。</p></article>
+</div>
 <div class="notice-box">
 <p>このサイトは実在企業の公式サイトではありません。個人が運営する実験的なWebプロジェクトです。</p>
 <p>「AI仮会社」に登場するメンバーは実在の社員ではなく、AIの役割設定を分かりやすくするための架空の設定です。</p>
