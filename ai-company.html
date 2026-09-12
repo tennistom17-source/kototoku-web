@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="運営者が社長として最終判断だけを行う、架空のAIチーム設定を紹介するページです。実在の社員ではありません。">
+<title>AI仮会社｜コトトク</title>
+<style>
+:root{--blue:#0649a9;--deep:#082c5d;--sky:#eaf3ff;--ink:#171b22;--muted:#626b78;--line:#dfe3e8;--soft:#f5f7f9;--white:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;line-height:1.8;font-size:16px}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1080px,calc(100% - 40px));margin:auto}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--blue);color:#fff;padding:10px 16px;z-index:100}.skip-link:focus{left:12px;top:12px}
+nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+nav .wrap{min-height:70px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding:8px 0}
+.brand{display:flex;align-items:center;gap:10px}
+.symbol{position:relative;width:36px;height:36px;border:3px solid var(--blue);border-radius:50%;flex:none}
+.symbol:before,.symbol:after{content:"";position:absolute;background:var(--blue)}
+.symbol:before{width:14px;height:3px;left:8px;top:14px}.symbol:after{width:3px;height:14px;left:14px;top:8px}
+.brand b{display:block;color:var(--blue);font-size:19px;letter-spacing:.06em}
+.brand small{display:block;color:#7b8490;font-size:10px}
+.navlinks{display:flex;gap:6px;flex-wrap:wrap;font-weight:700;font-size:14px;margin-left:auto}
+.navlinks a{display:inline-block;padding:10px 12px;border-radius:8px}
+.navlinks a:hover,.navlinks a[aria-current="page"]{color:var(--blue);background:var(--sky)}
+.menu{display:none;margin-left:auto;border:0;background:none;color:var(--blue);font-size:24px;cursor:pointer}
+@media(max-width:760px){
+  .navlinks{display:none;width:100%;flex-direction:column;gap:2px;margin-left:0}
+  .navlinks.open{display:flex}
+  .navlinks a{padding:12px 8px}
+  .menu{display:block}
+  nav .wrap{justify-content:space-between}
+}
+.page-hero{padding:56px 0 40px;background:linear-gradient(110deg,#eaf3ff,#fff 60%,#e3edfb)}
+.kicker{color:var(--blue);font-size:12px;font-weight:900;letter-spacing:.14em}
+.page-hero h1{margin:12px 0 14px;font-size:clamp(28px,6vw,44px);line-height:1.3}
+.page-hero p{max-width:680px;color:#4e5967;font-size:clamp(15px,2vw,18px);margin:0}
+.notice-box{margin:18px 0;padding:16px 18px;border-left:4px solid var(--blue);background:var(--sky);color:#2c3542;font-size:14px;border-radius:0 8px 8px 0}
+.notice-box p{margin:0 0 6px}
+.notice-box p:last-child{margin-bottom:0}
+main section{padding:52px 0}
+.section-head h2{margin:6px 0 12px;font-size:clamp(24px,4vw,34px);line-height:1.35}
+.section-head p{max-width:700px;margin:0 0 20px;color:var(--muted)}
+.linkcards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.linkcard{display:flex;flex-direction:column;gap:10px;padding:24px 20px;background:#fff;border:1px solid var(--line);border-radius:14px;min-height:190px}
+.linkcard:hover{border-color:var(--blue);box-shadow:0 14px 30px rgba(10,42,85,.08)}
+.linkcard small{color:var(--blue);font-weight:900;letter-spacing:.08em;font-size:11px}
+.linkcard h3{margin:0;font-size:19px}
+.linkcard p{margin:0;color:var(--muted);font-size:13px;flex:1}
+.linkcard .go{color:var(--blue);font-size:13px;font-weight:900}
+.linkcard .go:after{content:"　→"}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{display:flex;flex-direction:column;padding:24px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.card small{color:var(--blue);font-weight:900;letter-spacing:.08em;font-size:11px}
+.card h3{margin:8px 0 10px;font-size:19px}
+.card p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.tag-soon{margin-top:16px;display:inline-flex;align-items:center;justify-content:center;padding:6px 12px;border:1px solid var(--blue);color:var(--blue);font-size:12px;font-weight:800;border-radius:999px;width:max-content}
+article.post{max-width:760px;margin:0 auto}
+article.post h2{font-size:clamp(24px,4vw,32px);margin:0 0 10px}
+article.post .meta{color:var(--muted);font-size:13px;margin-bottom:24px}
+article.post h3{margin:34px 0 12px;font-size:19px;color:var(--blue)}
+article.post p{color:#33394299;color:#333942;margin:0 0 16px}
+article.post ol,article.post ul{padding-left:1.3em;margin:0 0 16px;color:#333942}
+article.post li{margin-bottom:8px}
+.post-footnote{margin-top:32px;padding:16px 18px;background:var(--soft);border-radius:10px;color:var(--muted);font-size:13px}
+.org-chart{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 10px}
+.org-dept{padding:18px;background:#fff;border:1px solid var(--line);border-radius:12px;text-align:center;font-weight:800;color:var(--deep)}
+.staff-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:10px}
+.staff-card{display:flex;gap:16px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:14px}
+.staff-avatar{flex:none;width:74px;height:74px}
+.staff-body h3{margin:0 0 2px;font-size:17px}
+.staff-body .dept{color:var(--blue);font-size:12px;font-weight:800;margin-bottom:2px}
+.staff-body .age{color:var(--muted);font-size:12px;margin-bottom:10px}
+.staff-body dl{margin:0}
+.staff-body dt{font-weight:800;font-size:12px;color:var(--deep);margin-top:8px}
+.staff-body dd{margin:2px 0 0;color:var(--muted);font-size:13px}
+.faq-list{margin:0}
+.faq-item{border-top:1px solid var(--line);padding:20px 0}
+.faq-item:last-child{border-bottom:1px solid var(--line)}
+.faq-item .q{font-weight:800;font-size:16px;margin:0 0 8px;color:var(--deep)}
+.faq-item .a{margin:0;color:var(--muted);font-size:14px}
+.faq-item .a a{color:var(--blue);text-decoration:underline}
+.source-note{margin-top:30px;padding:16px 18px;background:var(--soft);border-radius:10px;color:var(--muted);font-size:12px}
+footer{background:#111820;color:#fff}
+.footer-main{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:40px;padding:48px 0}
+.footer-main p,.footer-main a{color:#aeb8c5;font-size:12px}
+.footer-col b,.footer-col a{display:block;margin-bottom:10px}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:18px 0 26px;border-top:1px solid #333c47;color:#8e99a7;font-size:10px}
+@media(max-width:900px){.linkcards{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr 1fr}.org-chart{grid-template-columns:1fr 1fr}.staff-grid{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.wrap{width:min(100% - 28px,1080px)}main section{padding:40px 0}.linkcards,.cards,.org-chart{grid-template-columns:1fr}.footer-main{grid-template-columns:1fr}.footer-bottom{display:block}.staff-card{flex-direction:column}}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+<nav><div class="wrap">
+<a class="brand" href="index.html"><span class="symbol" aria-hidden="true"></span><span><b>コトトク</b><small>できるを、もっと身近に。</small></span></a>
+<button class="menu" aria-label="メニューを開く" aria-expanded="false">☰</button>
+<div class="navlinks">
+<a href="index.html">ホーム</a>
+<a href="diary.html">つくる日記</a>
+<a href="ai-company.html" aria-current="page">AI仮会社</a>
+<a href="index.html#tools">小さなツール</a>
+<a href="faq.html">よくある質問</a>
+</div>
+</div></nav>
+<header class="page-hero"><div class="wrap">
+<span class="kicker">AI COMPANY</span>
+<h1>AI仮会社をつくってみる</h1>
+<p>運営者が社長として最終判断だけを行い、生成AIに役割や専門手順を与えながら、小さなWebツールや情報を育てていく挑戦記です。</p>
+</div></header>
+<main id="main">
+
+<section><div class="wrap">
+<div class="notice-box">
+<p>ここに登場するメンバーは、実在する社員ではありません。AIの役割や得意分野を分かりやすくするための、架空のチーム設定です。</p>
+<p>AIは自律的な人格や感情を持つ存在ではありません。最終判断と公開承認は運営者が行います。</p>
+</div>
+</div></section>
+
+<section class="business"><div class="wrap">
+<div class="section-head"><span class="kicker">ORGANIZATION</span><h2>部署構成</h2>
+<p>役割を分かりやすくするための、架空の部署構成です。</p></div>
+<div class="org-chart">
+<div class="org-dept">社長室</div><div class="org-dept">市場・企画部</div><div class="org-dept">プロダクト部</div><div class="org-dept">Web開発部</div><div class="org-dept">ソフトウェア開発部</div><div class="org-dept">品質・リスク管理部</div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<div class="section-head"><span class="kicker">MEMBERS</span><h2>メンバー紹介</h2>
+<p>実名ではなくイニシャル表記、年齢はざっくりした年代で紹介します。似顔絵はすべて同じ絵柄のオリジナル抽象イラストで、実在人物には似せていません。</p></div>
+<div class="staff-grid">
+<article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="社長室の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#0d3b73"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#0d3b73" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>A.M.</h3>
+<div class="dept">社長室</div>
+<div class="age">40代前半</div>
+<dl>
+<dt>役割</dt><dd>複数の提案を整理し、社長が決めるべきことを3つに絞る。</dd>
+<dt>性格</dt><dd>落ち着いていて、急ぎすぎない。</dd>
+<dt>背景</dt><dd>アイデアが増えすぎると大事なことを見失うため、「今決めること」と「後で考えること」を分ける役として生まれた。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="市場・企画部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#145fa0"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#145fa0" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>M.A.</h3>
+<div class="dept">市場・企画部</div>
+<div class="age">30代前半</div>
+<dl>
+<dt>役割</dt><dd>誰が何に困っているかを調べる。</dd>
+<dt>性格</dt><dd>好奇心が強く、数字と利用者の声の両方を見る。</dd>
+<dt>背景</dt><dd>便利そうなものより、本当に使われるものを見つけたいと思っている。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="市場・企画部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#145fa0"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#145fa0" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>H.M.</h3>
+<div class="dept">市場・企画部</div>
+<div class="age">20代半ば</div>
+<dl>
+<dt>役割</dt><dd>新しい使い方、若い世代の感覚、流行の兆しを拾う。</dd>
+<dt>性格</dt><dd>軽やかで率直。流行に流されすぎない。</dd>
+<dt>背景</dt><dd>「それ、少し前っぽくない？」と優しく言ってくれる存在として参加した。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="プロダクト部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#1f7fa3"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#1f7fa3" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>K.R.</h3>
+<div class="dept">プロダクト部</div>
+<div class="age">30代後半</div>
+<dl>
+<dt>役割</dt><dd>アイデアを、実際に使える小さなツールに整理する。</dd>
+<dt>性格</dt><dd>現実的で、作りすぎない。</dd>
+<dt>背景</dt><dd>機能を増やしすぎて誰も使えないものになるのを防ぐためにいる。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="プロダクト部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#1f7fa3"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#1f7fa3" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>Y.S.</h3>
+<div class="dept">プロダクト部</div>
+<div class="age">20代後半</div>
+<dl>
+<dt>役割</dt><dd>スマホで迷わず使えるかを確認する。</dd>
+<dt>性格</dt><dd>利用者目線で、細かな違和感に気付く。</dd>
+<dt>背景</dt><dd>良いアイデアでも「使い方が分からない」で終わることを減らしたい。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="Web開発部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#2f8f8f"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#2f8f8f" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>K.N.</h3>
+<div class="dept">Web開発部</div>
+<div class="age">30代半ば</div>
+<dl>
+<dt>役割</dt><dd>ホームページ、HTML、CSS、JavaScriptを形にする。</dd>
+<dt>性格</dt><dd>静かで丁寧。壊れないことを大切にする。</dd>
+<dt>背景</dt><dd>見た目だけでなく、あとで直しやすいことにもこだわる。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="ソフトウェア開発部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#4a6fa5"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#4a6fa5" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>M.T.</h3>
+<div class="dept">ソフトウェア開発部</div>
+<div class="age">30代後半</div>
+<dl>
+<dt>役割</dt><dd>Pythonや小さなソフトの設計を考える。</dd>
+<dt>性格</dt><dd>堅実で、複雑な仕組みを増やしすぎない。</dd>
+<dt>背景</dt><dd>便利さのために運営者が疲れ切らないよう、保守の負担を先に考える。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="ソフトウェア開発部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#4a6fa5"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#4a6fa5" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>H.R.</h3>
+<div class="dept">ソフトウェア開発部</div>
+<div class="age">30代前半</div>
+<dl>
+<dt>役割</dt><dd>Pythonによる試作品、データ処理、小さな自動化を作る。</dd>
+<dt>性格</dt><dd>試すのが早く、失敗を記録する。</dd>
+<dt>背景</dt><dd>「まず小さく動かしてみる」を担当する実験係。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="品質・リスク管理部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#5b5f97"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#5b5f97" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>S.T.</h3>
+<div class="dept">品質・リスク管理部</div>
+<div class="age">40代前半</div>
+<dl>
+<dt>役割</dt><dd>表示崩れ、文章、リンク、操作の分かりにくさを確認する。</dd>
+<dt>性格</dt><dd>穏やかで細かい。</dd>
+<dt>背景</dt><dd>公開直前に「これ、本当に伝わる？」と立ち止まるためにいる。</dd>
+</dl>
+</div>
+</article><article class="staff-card">
+<svg class="staff-avatar" viewBox="0 0 100 100" role="img" aria-label="品質・リスク管理部の抽象的な似顔絵イラスト（実在人物ではありません）">
+<rect x="0" y="0" width="100" height="100" rx="20" fill="#eaf3ff"/>
+<circle cx="50" cy="40" r="22" fill="#5b5f97"/>
+<path d="M14,92 C14,66 30,58 50,58 C70,58 86,66 86,92 Z" fill="#5b5f97" opacity=".55"/>
+</svg>
+<div class="staff-body">
+<h3>M.S.</h3>
+<div class="dept">品質・リスク管理部</div>
+<div class="age">40代半ば</div>
+<dl>
+<dt>役割</dt><dd>個人情報、著作権、費用、副業上の注意点を確認する。</dd>
+<dt>性格</dt><dd>慎重だが、挑戦を止めるだけではない。</dd>
+<dt>背景</dt><dd>安全に続けられる形を作るためのブレーキ役。</dd>
+</dl>
+</div>
+</article>
+</div>
+</div></section>
+
+</main>
+<footer><div class="wrap footer-main">
+<div><b>コトトク</b><p>個人が生成AIやPythonと一緒に、小さなWebプロジェクトを育てる実験ノートです。会社ではなく、個人運営のプロジェクトです。</p></div>
+<div class="footer-col"><b>サイト内</b><a href="index.html">ホーム</a><a href="diary.html">つくる日記</a><a href="ai-company.html">AI仮会社</a></div>
+<div class="footer-col"><b>案内</b><a href="index.html#tools">小さなツール</a><a href="faq.html">よくある質問</a></div>
+<div class="footer-col"><b>このサイトについて</b><p>掲載内容は個人の試行錯誤の記録です。重要な判断には公式情報・専門家の情報もあわせてご確認ください。</p></div>
+</div>
+<div class="wrap footer-bottom"><span>© 2026 コトトク（個人運営プロジェクト）</span><span>AI仮会社はメンバー設定を含め架空の設定です</span></div>
+</footer>
+<script>
+(function(){
+  var btn=document.querySelector('.menu');
+  var nav=document.querySelector('.navlinks');
+  if(btn&&nav){
+    btn.addEventListener('click',function(){
+      var open=nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded',open?'true':'false');
+    });
+  }
+})();
+</script>
+</body></html>
