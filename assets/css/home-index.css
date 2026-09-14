@@ -16,6 +16,11 @@
 .home-index .directory-list strong{display:block;font-size:16px;color:var(--deep)}
 .home-index .directory-list small{display:block;font-size:12px;color:var(--muted)}
 .home-index .directory-list .direction{color:var(--blue)}
+.home-index .directory-list .recommended-tool a{padding:16px;border-left:4px solid #17644f;background:#eaf5ef}
+.home-index .recommended-tool .tool-label{display:block;margin-bottom:6px;color:#17644f;font-size:12px}
+.home-index .recommended-tool strong{margin-bottom:4px}
+.home-index .recommended-tool .tool-action{display:block;margin-top:10px;color:var(--blue);font-size:14px;font-weight:700}
+.home-index .directory-list a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .home-index .index-film{margin:0}
 .home-index .index-film video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#18232d;border-radius:4px}
 .home-index .index-film figcaption{font-size:12px;color:var(--muted);margin-top:10px}
