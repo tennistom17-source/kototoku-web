@@ -7,6 +7,7 @@
     button.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く');
   }
   if(button&&navigation){
+    button.closest('nav').classList.add('menu-ready');
     button.addEventListener('click',function(){setMenu(!navigation.classList.contains('open'));});
     navigation.addEventListener('click',function(event){
       if(event.target.closest('a')){setMenu(false);}
