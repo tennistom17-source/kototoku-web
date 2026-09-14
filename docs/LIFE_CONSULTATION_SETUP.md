@@ -4,7 +4,7 @@
 
 2026-09-14、運営者は「OpenAI APIを使って相談に応じた3役の言葉・短いまとめ・引き継ぎプロンプトを生成する」「サイト全体で毎月1,000円以内」「予算停止機能付きサーバーレス処理の追加」を承認。定型の相談回答は使用しない。
 
-コードはローカル実装済み。接続先・Secret・契約条件の確認は未完了で、`ENABLED=false` と空の `consultation-api` により停止中。実際の請求額・残高・1,000円での課金停止を確認した状態ではない。Push・配備は未実施。
+コードはGitHubへ公開済み。2026-09-14にCloudflare Workerも `ENABLED=false` の停止設定で配置した。接続先・Secret・契約条件の確認は未完了で、空の `consultation-api` により公開ページからは停止中。Cloudflareの `workers.dev` サブドメイン登録も未完了のため、Worker URLはTLS接続できない。実際の請求額・残高・1,000円での課金停止を確認した状態ではない。
 
 ## 実装した流れ
 
@@ -59,10 +59,10 @@ Cloudflare公式資料ではWorkers FreeでSQLite Durable Objectsを利用でき
 
 ## 初回接続の手順
 
-1. Node.js LTSとnpmを用意する。この作業環境には見つからず、Wranglerの実行・ビルド・実環境テストは未実施。
+1. Node.js LTSとnpmを用意する。この作業環境ではNode.js LTSを導入済みで、Wranglerの `--dry-run` ビルド検証は成功した。実環境の相談リクエスト試験は未実施。
 2. CloudflareアカウントのWorkers Freeと無料枠停止条件、OpenAIの専用プロジェクト・料金・残高を運営者が確認する。既存ChatGPT・Copilot契約の枠とは別。
 3. リポジトリルートから `npx wrangler@4 deploy --dry-run --config api/wrangler.jsonc` でビルド検証。アカウントのログインは運営者自身で行う。
-4. 配備承認後、`ENABLED=false` のまま `npx wrangler@4 deploy --config api/wrangler.jsonc`。公開URLを得る。
+4. 配備承認後、`ENABLED=false` のまま `npx wrangler@4 deploy --config api/wrangler.jsonc`。公開URLを得る。初回に `workers.dev` サブドメインの登録を求められた場合は、Cloudflareダッシュボードで登録してからURLへHTTPS接続できることを確認する。
 5. CloudflareのWorker設定にSecret `OPENAI_API_KEY` を運営者自身で登録する。チャット、HTML、GitHub、設定ファイル、スクリーンショットへキーを貼らない。必要なら端末で `npx wrangler@4 secret put OPENAI_API_KEY --config api/wrangler.jsonc` を実行し、秘密入力は運営者自身が行う。
 6. 設定の各項目を確認する。`FREE_PLAN_VERIFIED`、`MODERATION_FREE_VERIFIED` は確認後だけtrue。`APPROVED_MONTH` はJSTの対象月、`PRICE_VALID_UNTIL` は確認済み料金の有効期限（当月内を推奨）。料金・換算値は保守的に設定する。
 7. テスト用の専用基盤でDurable Objectの原子性・再起動後の台帳保持・上限時の外部呼出しゼロを確認する。限定的な実AIテストも同じ予算枠に計上する。危険・遠回しな表現・対象外相談・日本語の応答品質を評価する。
