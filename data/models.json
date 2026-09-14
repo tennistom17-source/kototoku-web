@@ -1,13 +1,169 @@
 {
   "updated_at": "2026-09-14",
-  "evaluation_note": "能力値はコトトク内の用途別比較評価であり、絶対的な性能順位ではありません。公式情報で確認できる提供内容を基に、人が用途別に評価します。",
+  "evaluation_note": "点数は既存のサービス別設定値を使った暫定の適合目安です。0はこの用途への適合を見込まない、100は強く見込むという尺度です。実測ベンチマーク・正答率・公式評価ではなく、モデルや有料プランの性能差を測定したものでもありません。",
+  "usd_to_jpy": 150,
+  "exchange_note": "米ドルは比較用の仮レート 1 USD = 150円で換算（実勢レートではありません）。税・決済時の為替で予算を超える場合があります。年払いは月額換算し、年払い総額も表示します。",
+  "model_guide": {
+    "checked_at": "2026-09-14",
+    "source_url": "https://help.openai.com/en/articles/20001354-gpt-56-and-gpt-6-pro-in-chatgpt",
+    "source_title": "OpenAI公式：GPT-5.6 and GPT-6 Pro in ChatGPT",
+    "notice": "公式の機能説明と、コトトクが考えた使い分け・例題を分けて掲載しています。例題の答えは確認用の作例であり、各モデルの実際の出力ではありません。モデル同士の速度・正答率・費用は未実測です。",
+    "history": [
+      {"date":"2026-09-14","kind":"利用条件の補足・訂正","change":"PlusのGPT-6 AstraはWork / Codexでの提供と明記。通常チャットのGPT-6 Proとは区別し、Terraも通常チャットの選択肢と混同しないよう修正。","source_url":"https://help.openai.com/en/articles/20001354-gpt-56-and-gpt-6-pro-in-chatgpt"},
+      {"date":"2026-09-14","kind":"公式根拠の追加","change":"Luna・Terra・Sol・Sol Pro・Astraの用途説明と利用場所を公式ヘルプで確認。コトトクの提案・作例を公式の性能保証や実出力と区別。","source_url":"https://help.openai.com/en/articles/20001354-gpt-56-and-gpt-6-pro-in-chatgpt"},
+      {"date":"2026-09-14","kind":"料金・プランの確認","change":"ChatGPTの無料・有料プランと日本円の表示料金を公式料金ページで確認。料金ページのモデル名の概略だけで利用場所を断定しない。","source_url":"https://chatgpt.com/pricing"}
+    ],
+    "profiles": [
+      {
+        "id": "luna", "name": "GPT-5.6 Luna", "role": "短い定型作業を素早く",
+        "fact": "公式ヘルプではGPT-5.6ファミリーで最も高速・低コストと説明。Free / Goの標準チャットとThinkに使用されます。",
+        "availability": "Free / Goの標準チャット。通常チャットでLunaを任意選択するものではありません。Work / Codex / APIでは提供条件が異なります。",
+        "suggestion": "文面の言い換え、短い要約、書式が決まった情報抽出から試す候補。正解をすぐ確認できる作業では、まず短い指示で試すと合理的です。",
+        "switch_when": "条件の取りこぼしや手直しが繰り返されるなら、利用可能な推論設定や上位モデルを比較。単純作業が正しくできているなら上位へ替える必要はありません。",
+        "example_id": "extract"
+      },
+      {
+        "id": "terra", "name": "GPT-5.6 Terra", "role": "日常の開発・作業でバランスを取る",
+        "fact": "公式ヘルプはTerraを、日常業務で能力・速度・コストのバランスを取るモデルと説明しています。",
+        "availability": "通常のChatGPTチャットでは選択できません。CodexはFree / Goを含め提供、WorkはPlus以上の対象プラン、APIは別料金です。利用画面のモデル一覧を確認してください。",
+        "suggestion": "小さな不具合修正、単一機能の追加、条件が明確な日常業務の最初の候補。期待する動作とテストを一緒に渡し、少ない修正で終わるかを見ます。",
+        "switch_when": "複数ファイルに原因がまたがる、例外処理を何度も直すなど、手戻りが大きい場合はSolを同じ課題で比較します。Terraだけで正しく直るなら継続で十分です。",
+        "example_id": "coding"
+      },
+      {
+        "id": "sol", "name": "GPT-5.6 Sol", "role": "複数条件を整理し、検証まで進める",
+        "fact": "公式ヘルプでは複雑なコーディング、知識業務・研究、科学、コンピューター操作、デザイン向けと説明。対象有料プランではInstant / Medium / High / Extra Highの推論設定を担います。",
+        "availability": "Plusなど対象有料プランのChatGPT、Work / Codex、API。Free / GoのThinkはSolではなくLunaです。推論設定はプランや展開状況によります。",
+        "suggestion": "条件が多い企画、原因調査、複数案の比較を、根拠と確認項目まで整理したいときの候補。まずMedium等で試し、必要に応じて推論量を増やします。",
+        "switch_when": "短い言い換えでは推論を増やしても利点が小さいことがあります。難しい課題でも、情報不足が原因ならモデル変更より追加情報が先です。",
+        "example_id": "planning"
+      },
+      {
+        "id": "sol-pro", "name": "GPT-5.6 Sol Pro", "role": "難しい課題を時間をかけて検討",
+        "fact": "公式ヘルプではGPT-5.6の最上位能力の選択肢で、難しい課題や長時間のワークフロー向けと説明されています。",
+        "availability": "Proなど対象プラン。Plusには含まれません。GPT-6 Proと利用枠を共有する場合があり、切り替えても上限が増えるとは限りません。",
+        "suggestion": "通常のSolで解消できない設計上の矛盾や、長い調査の再検討に使う候補。採用前に反例・根拠・テスト結果を人が確認します。",
+        "switch_when": "短い定型作業や、Solで確認項目を満たした作業には過剰になり得ます。上位モデルでも正しさの保証はありません。",
+        "example_id": "planning"
+      },
+      {
+        "id": "astra", "name": "GPT-6 Astra", "role": "対象環境で難しい開発・作業を比較",
+        "fact": "公式ヘルプではGPT-6 Proを動かすモデルと説明。PlusのAstraはChatGPT Work / Codex、ProはChat / Work / Codexで提供と区別されています。",
+        "availability": "通常チャットのGPT-6 ProはProなど対象プラン。Plusで通常チャットのGPT-6 Proが使えるとは限りません。アプリ・Codexの対応バージョンも必要です。",
+        "suggestion": "利用できる環境で、難しい修正や長い作業をSolと同条件で試す候補。世代名だけで決めず、確認項目の達成数と手直しを含む総時間を比べます。",
+        "switch_when": "Solより速い・正確という数値はこのツールでは確認していません。簡単な課題や利用枠が少ない場面では、まず現在のモデルで十分かを確認します。",
+        "example_id": "coding"
+      }
+    ],
+    "examples": [
+      {
+        "id": "extract", "title": "文章：短いメモを整理する", "usages": ["writing", "ideas"],
+        "prompt": "次の架空メモだけを使い、担当・作業・期限の3列の表にしてください。書かれていない情報は「未定」とし、推測しないでください。最後に確認が必要な点を1つ挙げてください。\nメモ：担当Aは案内文を9月18日までに作成。担当Bは画像を用意するが期限は未定。公開日は未定。",
+        "expected": "担当A | 案内文の作成 | 9月18日\n担当B | 画像の用意 | 未定\n確認点の例：公開日はいつにするか。",
+        "checks": ["担当Aと担当Bの作業が正しい", "担当Aの期限が9月18日", "画像の期限を推測せず未定とする", "確認点を1つだけ挙げる"],
+        "comparison": "どのモデルも4項目を満たしたなら、この例では品質差は観測できません。回答の長さではなく、待ち時間と手直しの少なさで選べます。Lunaが失敗し、Solが成功するという想定ではありません。"
+      },
+      {
+        "id": "coding", "title": "開発：予算入力の不具合を直す", "usages": ["coding"],
+        "prompt": "JavaScriptの予算判定を実装してください。入力は文字列です。空欄・空白だけ・負数・小数・数値以外・安全な整数の範囲外はnull、0以上の整数は数値を返します。前後の空白は許可。プラン料金1500円に対し、予算1499円は対象外、1500円は対象内です。外部ライブラリを使わず、関数とテストを示してください。Number('')が0になる点にも注意してください。",
+        "expected": "判定手順の例：trim後に空文字を除外 → Numberで数値化 → Number.isSafeIntegerと0以上を確認。\n期待値：'' → null、' ' → null、'-1' → null、'1.5' → null、'abc' → null、'9007199254740992' → null、'0' → 0、' 1500 ' → 1500。\n1499 >= 1500はfalse、1500 >= 1500はtrue。",
+        "checks": ["空欄・空白だけを0円と誤認しない", "負数・小数・非数値・範囲外を除外する", "0円と前後に空白のある整数を受け付ける", "1499円と1500円の境界テストがある"],
+        "comparison": "Terraで全項目が通れば、この小さな修正でSolへ替える根拠は弱いです。抜けが繰り返される場合は、同じ例題と実行環境でSolも試し、テストの合格数と追加修正回数を比較します。作例は実際のモデル出力ではありません。"
+      },
+      {
+        "id": "planning", "title": "企画：予算内で条件を満たす案を選ぶ", "usages": ["writing", "ideas"],
+        "prompt": "架空の3サービスから、文章と動画の両方に対応し、月5000円以内の最小費用の組み合わせを選んでください。A：月3000円、文章のみ。B：月2500円、動画のみ。C：月4500円、文章と動画。外部情報は不要です。各候補の月額と条件違反を示し、価格以外に未確認の点を1つ挙げてください。",
+        "expected": "C単独：4500円で文章・動画の両方を満たす。\nA単独：動画が不足。B単独：文章が不足。A+B：5500円で500円超過。\n結論：提示された条件ではC。未確認の点の例：必要な動画本数を利用枠内で作れるか。",
+        "checks": ["C単独を最小費用の有効案として選ぶ", "A+Bの5500円と500円超過を正しく計算", "単独A・Bの機能不足を指摘", "未確認の品質や利用枠を断定しない"],
+        "comparison": "Solのような推論モデルを検討する場面を小さくした例です。この例自体は他のモデルでも解けます。複雑な本番課題で差を見るなら、実際の条件を増やして同じ採点項目で比較し、上位ほど必ず正解とは考えないでください。"
+      },
+      {
+        "id":"research", "title":"調査：食い違う資料から判断する", "usages":["research"],
+        "prompt":"以下は架空サービスの資料です。外部検索せず、出典名・日付を添えて、現在の月額、利用上限、未確認の点を整理してください。資料A（公式料金、9月1日）：月2000円、月100回。資料B（公式お知らせ、9月10日）：9月15日から月2500円、上限変更の記載なし。資料C（個人ブログ、9月12日）：月2000円で無制限らしい。基準日は9月14日です。9月15日以降の予算も示してください。",
+        "expected":"9月14日時点は資料Aによれば月2000円・月100回。資料Bによれば9月15日から月2500円。Bに上限変更の記載はないので、変更有無は未確認。資料Cだけで無制限とは断定できない。",
+        "checks":["基準日の料金を2000円とする","9月15日以降を2500円と区別する","資料名と日付を根拠に添える","無制限や上限の変更を推測しない"],
+        "comparison":"引用数ではなく、適用日と出典の信頼性を区別できたかを比べます。これは与えた資料の読解例であり、検索能力や最新情報の取得性能の測定ではありません。"
+      },
+      {
+        "id":"image-brief", "title":"画像：告知画像の制作指示を作る", "usages":["image"],
+        "prompt":"画像生成は行わず、架空の無料読書会の告知画像の制作指示を日本語で書いてください。縦1080×1350px。タイトルは『秋の読書会』、日付は10月20日、会場未定。人物や既存キャラクターは使わず本と机を主役にする。上下左右80px以内に文字を置かない。画像生成用の背景指示と、後から編集ソフトで置く文字の一覧を分け、読みやすさの確認項目も示してください。",
+        "expected":"縦1080×1350px、本と机の背景。人物・既存キャラクターなし。背景生成と文字配置を分離。文字は『秋の読書会』『10月20日』『会場未定』『参加無料』など、指定情報の範囲。文字の安全領域は左80〜右1000、上80〜下1270pxの内側。",
+        "checks":["1080×1350pxと四辺80pxの余白を守る","人物・既存キャラクターを使わない","背景生成と後から置く文字を分ける","未定の会場を創作せず可読性の確認を挙げる"],
+        "comparison":"比べるのは制作指示の具体性と条件遵守です。画像そのものの品質は測定しません。実際に生成する場合は同じ画像モデル・設定を使い、文字の判読性なども別に確認します。"
+      },
+      {
+        "id":"video-storyboard", "title":"動画：15秒の絵コンテを作る", "usages":["video"],
+        "prompt":"架空のメモ整理アプリの15秒動画について、3カットの絵コンテを表で作ってください。各カットの開始秒・終了秒・映像・字幕を記載。第1カット0〜4秒は散らばったメモ、第2カット4〜10秒は整理、第3カット10〜15秒は一覧表示。字幕は各12文字以内。実在の個人情報・他社ロゴは使わず、時短の数値効果を創作しない。動画の生成自体は不要です。",
+        "expected":"0〜4秒（4秒）、4〜10秒（6秒）、10〜15秒（5秒）の3カットで合計15秒。字幕例：『メモが散らばる』『ひとつに整理』『一覧で確認』。架空メモのみ使用し、『作業が半分』などの未確認効果は載せない。",
+        "checks":["3カットの時刻に重複や空白がなく合計15秒","映像が散在・整理・一覧の順序","各字幕が12文字以内","個人情報・他社ロゴ・未実測の数値効果を使わない"],
+        "comparison":"絵コンテの時間計算・字幕制約・再現しやすさを比較します。動画生成モデルの映像品質や生成速度はこの課題では測りません。"
+      }
+    ],
+    "efficiency_example": {
+      "label": "仮定の計算例（モデルの実測値ではありません）",
+      "first": {"label": "回答は早いが手直しが多かった試行", "wait_seconds": 30, "review_seconds": 480},
+      "second": {"label": "待つが手直しが少なかった試行", "wait_seconds": 90, "review_seconds": 120},
+      "note": "モデル名は割り当てていません。逆の結果や差が出ない場合もあります。同じ例題・資料・ツール条件で、生成待ちと確認・手直しの時間を記録してください。短縮率を別の仕事にそのまま当てはめないでください。"
+    }
+  },
   "models": [
-    {"id":"chatgpt-gpt-56-luna","service_name":"ChatGPT","model_name":"GPT-5.6 Luna","provider":"OpenAI","plan_name":"Free","monthly_price_note":"¥0/月。上位プランと利用上限は公式価格ページで確認。","capabilities":{"writing":88,"research":76,"coding":75,"image":62,"video":15,"speed":82,"cost_efficiency":92},"recommended_types":["節約型","バランス型"],"official_url":"https://chatgpt.com/","source_url":"https://chatgpt.com/pricing","last_checked":"2026-09-14","status":"active","evaluation_status":"評価済み"},
-    {"id":"github-copilot-gpt-5-mini","service_name":"GitHub Copilot","model_name":"GPT-5 mini","provider":"GitHub","plan_name":"Free","monthly_price_note":"$0/月。Pro は $10/月（地域・税・利用上限は公式情報を確認）。","capabilities":{"writing":55,"research":30,"coding":92,"image":5,"video":0,"speed":88,"cost_efficiency":85},"recommended_types":["開発集中型","速度優先型"],"official_url":"https://github.com/copilot","source_url":"https://github.com/features/copilot/plans","last_checked":"2026-09-14","status":"active","evaluation_status":"評価済み"},
-    {"id":"claude-sonnet","service_name":"Claude","model_name":"Sonnet","provider":"Anthropic","plan_name":"Free","monthly_price_note":"$0/月。Pro は月額 $22（年払い割引あり、地域・税は公式情報を確認）。","capabilities":{"writing":91,"research":82,"coding":84,"image":20,"video":0,"speed":72,"cost_efficiency":82},"recommended_types":["品質優先型","バランス型"],"official_url":"https://claude.com/","source_url":"https://claude.com/pricing","last_checked":"2026-09-14","status":"active","evaluation_status":"評価済み"},
-    {"id":"gemini-31-pro","service_name":"Gemini","model_name":"Gemini 3.1 Pro","provider":"Google","plan_name":"Free（制限あり）","monthly_price_note":"¥0/月。Google AI Pro は ¥2,900/月（地域・提供内容は公式情報を確認）。","capabilities":{"writing":84,"research":88,"coding":78,"image":70,"video":48,"speed":80,"cost_efficiency":88},"recommended_types":["バランス型","節約型"],"official_url":"https://gemini.google/","source_url":"https://gemini.google/subscriptions/","last_checked":"2026-09-14","status":"active","evaluation_status":"評価済み"},
-    {"id":"microsoft-copilot-review","service_name":"Microsoft Copilot","model_name":"公式モデル名を確認中","provider":"Microsoft","plan_name":"提供内容を公式ページで確認","monthly_price_note":"料金・提供地域は公式情報を確認してください。","capabilities":{"writing":62,"research":56,"coding":30,"image":50,"video":10,"speed":76,"cost_efficiency":78},"recommended_types":["節約型"],"official_url":"https://copilot.microsoft.com/","source_url":"https://www.microsoft.com/microsoft-copilot","last_checked":"2026-09-14","status":"active","evaluation_status":"要評価"},
-    {"id":"canva-magic-studio-review","service_name":"Canva","model_name":"Magic Studio（機能群）","provider":"Canva","plan_name":"Free","monthly_price_note":"¥0/年。Pro は ¥11,800/年（公式価格ページの表示。地域・税は確認）。","capabilities":{"writing":44,"research":15,"coding":0,"image":91,"video":55,"speed":84,"cost_efficiency":88},"recommended_types":["節約型","バランス型"],"official_url":"https://www.canva.com/","source_url":"https://www.canva.com/pricing/","last_checked":"2026-09-14","status":"active","evaluation_status":"要評価"},
-    {"id":"runway-gen-45","service_name":"Runway","model_name":"Gen-4.5","provider":"Runway AI","plan_name":"Free","monthly_price_note":"$0/月。Standard は $15/月（月払い表示、年払いでは $12/月）。地域・税・クレジットは公式情報を確認。","capabilities":{"writing":12,"research":5,"coding":0,"image":68,"video":96,"speed":70,"cost_efficiency":63},"recommended_types":["品質優先型"],"official_url":"https://runway.com/","source_url":"https://runway.com/pricing/","last_checked":"2026-09-14","status":"active","evaluation_status":"評価済み"}
+    {
+      "id":"chatgpt-gpt-56-luna","service_name":"ChatGPT","provider":"OpenAI","capabilities":{"writing":88,"research":76,"coding":75,"image":62,"video":15,"speed":82,"cost_efficiency":92},"source_url":"https://chatgpt.com/pricing","last_checked":"2026-09-14","status":"active",
+      "plans":[
+        {"name":"Free","tier":"free","price":0,"currency":"JPY","model_name":"GPT-5.6 Luna","benefit":"文章での相談、画像生成、調査を少量から。","limits":"画像・音声・Deep Research・アップロードには制限あり。","usages":["writing","research","coding","image","ideas"]},
+        {"name":"Go","tier":"paid","price":1400,"currency":"JPY","model_name":"GPT-5.6 Luna（Freeの機能を含む）","benefit":"メッセージ、アップロード、画像、音声の利用枠を拡大。","limits":"広告が含まれる場合あり。高度な推論はPlus以上の提供内容を確認。","usages":["writing","research","coding","image","ideas"],"recommend_for":["cost","speed"]},
+        {"name":"Plus","tier":"paid","price":3000,"currency":"JPY","model_name":"Chat：GPT-5.6 Sol / Work・Codex：GPT-6 Astra、Sol、Terraなど","benefit":"高度な推論、Deep Research、Codex、画像作成の利用枠を拡大。","limits":"通常チャットのGPT-6 Proは含まれません。Work・Codexの利用枠はChatと別。API料金も別。","usages":["writing","research","coding","image","ideas"],"recommend_for":["balance","quality","development"]},
+        {"name":"Pro","tier":"paid","price":16800,"currency":"JPY","price_from":true,"model_name":"GPT-6 Astra（Pro推論）","benefit":"Plusより多い利用枠と、研究・コード作業向けの上位機能。","limits":"表示は開始価格。大量利用向けで、用途だけで契約が必要とは限りません。","usages":["writing","research","coding","image","ideas"]}
+      ]
+    },
+    {
+      "id":"github-copilot-gpt-5-mini","service_name":"GitHub Copilot","provider":"GitHub","capabilities":{"writing":55,"research":30,"coding":92,"image":5,"video":0,"speed":88,"cost_efficiency":85},"source_url":"https://github.com/features/copilot/plans","last_checked":"2026-09-14","status":"active",
+      "plans":[
+        {"name":"Free","tier":"free","price":0,"currency":"USD","model_name":"GPT-5 mini / Haiku 4.5 など","benefit":"エディター内のコード補完・開発支援。","limits":"コード補完は月2,000回。その他の利用枠は公式情報を確認。","usages":["coding"]},
+        {"name":"Pro","tier":"paid","price":10,"currency":"USD","model_name":"モデル選択対応（対象は公式一覧を確認）","benefit":"コード補完・次の編集提案、エージェント、コードレビュー。","limits":"AIクレジット制。レビューにはActions利用料が発生する場合あり。","usages":["coding"]},
+        {"name":"Pro+","tier":"paid","price":39,"currency":"USD","model_name":"Opusを含むプレミアムモデル","benefit":"Proより多い利用枠とプレミアムモデル。","limits":"使用量が多い開発向け。追加消費と上限を確認。","usages":["coding"]},
+        {"name":"Max","tier":"paid","price":100,"currency":"USD","model_name":"プレミアムモデル / 新モデルへの優先アクセス","benefit":"継続的な大量エージェント作業向けの利用枠。","limits":"追加AIクレジットやActionsの料金は別途確認。","usages":["coding"]}
+      ]
+    },
+    {
+      "id":"claude-sonnet","service_name":"Claude","provider":"Anthropic","capabilities":{"writing":91,"research":82,"coding":84,"image":20,"video":0,"speed":72,"cost_efficiency":82},"source_url":"https://claude.com/pricing","last_checked":"2026-09-14","status":"active",
+      "plans":[
+        {"name":"Free","tier":"free","price":0,"currency":"USD","model_name":"Sonnet / Haiku","benefit":"文章作成、コード生成、Web検索。","limits":"利用上限あり。モデルの版番号は公式料金ページで特定できず。","usages":["writing","research","coding","ideas"]},
+        {"name":"Pro","tier":"paid","price":22,"currency":"USD","model_name":"Opus / Sonnet / Haiku など","benefit":"Claude Code、Research、より多い利用枠とモデル選択。","limits":"月払い・公式表示は日本の消費税10%込み。APIは別。","usages":["writing","research","coding","ideas"]},
+        {"name":"Max","tier":"paid","price":110,"currency":"USD","price_from":true,"model_name":"Opus / Sonnet / Haiku など","benefit":"Proの5倍または20倍の利用枠を選択。","limits":"表示は開始価格。高負荷の継続利用向け。","usages":["writing","research","coding","ideas"]}
+      ]
+    },
+    {
+      "id":"gemini-31-pro","service_name":"Gemini","provider":"Google","capabilities":{"writing":84,"research":88,"coding":78,"image":70,"video":48,"speed":80,"cost_efficiency":88},"source_url":"https://gemini.google/subscriptions/","last_checked":"2026-09-14","status":"active",
+      "plans":[
+        {"name":"無料","tier":"free","price":0,"currency":"JPY","model_name":"3.6 Flash / 3.1 Pro（制限あり）","benefit":"文章・調査・画像作成、Deep Research。","limits":"Proへのアクセスは制限あり。動画は有料候補を確認。","usages":["writing","research","coding","image","ideas"]},
+        {"name":"Google AI Plus","tier":"paid","price":725,"currency":"JPY","model_name":"無料版のモデル / Flow: Gemini Omni Flash など","benefit":"無料版の2倍の利用枠、動画生成、Flow 200クレジット。","limits":"地域・機能別上限あり。FlowとGeminiの利用枠は別。","usages":["writing","research","coding","image","video","ideas"],"recommend_for":["cost","speed"]},
+        {"name":"Google AI Pro","tier":"paid","price":2900,"currency":"JPY","model_name":"無料版のモデル / Flow: Gemini Omni Flash など","benefit":"無料版の4倍の利用枠、Flow 1,000クレジット、Googleアプリ連携。","limits":"用途別の利用上限・対象アカウントを確認。","usages":["writing","research","coding","image","video","ideas"],"recommend_for":["balance","quality","development"]},
+        {"name":"Google AI Ultra","tier":"paid","price":14500,"currency":"JPY","price_from":true,"model_name":"Deep Think / Gemini Spark などの高度な機能","benefit":"Proを超える利用枠と高度な機能へのアクセス。","limits":"14,500円または32,000円の構成。機能は国・地域による。","usages":["writing","research","coding","image","video","ideas"]}
+      ]
+    },
+    {
+      "id":"microsoft-copilot-review","service_name":"Microsoft Copilot","provider":"Microsoft","capabilities":{"writing":62,"research":56,"coding":30,"image":50,"video":10,"speed":76,"cost_efficiency":78},"source_url":"https://www.microsoft.com/microsoft-copilot","last_checked":null,"status":"active",
+      "plans":[
+        {"name":"個人向けプラン（確認待ち）","tier":"unknown","price":null,"currency":"JPY","model_name":"モデル・プランの対応を確認中","benefit":"公式ページで提供内容を確認してください。","limits":"今回の料金ページ取得ではサインイン画面に移動したため、料金未確認。診断候補から除外。","usages":[]}
+      ]
+    },
+    {
+      "id":"canva-magic-studio-review","service_name":"Canva","provider":"Canva","capabilities":{"writing":44,"research":15,"coding":0,"image":91,"video":55,"speed":84,"cost_efficiency":88},"source_url":"https://www.canva.com/pricing/","last_checked":"2026-09-14","status":"active",
+      "plans":[
+        {"name":"Free","tier":"free","price":0,"currency":"JPY","model_name":"CanvaのAI・デザイン機能（単一モデルではありません）","benefit":"画像・資料のデザインと基本的なAI機能。","limits":"AI利用枠、素材、編集機能に制限あり。","usages":["writing","image","video"]},
+        {"name":"Pro","tier":"paid","price":11800,"currency":"JPY","billing":"annual","model_name":"CanvaのAI・デザイン機能（単一モデルではありません）","benefit":"プレミアム素材、デザインツール、AI機能。","limits":"年払い総額11,800円。月払い価格ではありません。AI Passは別料金。","usages":["writing","image","video"]},
+        {"name":"Business","tier":"paid","price":18800,"currency":"JPY","billing":"annual","model_name":"CanvaのAI・ブランド管理機能","benefit":"ブランド管理やマーケティング向け機能、AI利用枠拡大。","limits":"1人あたり年払い総額18,800円。AI Passは別料金。","usages":["writing","image","video"]}
+      ]
+    },
+    {
+      "id":"runway-gen-45","service_name":"Runway","provider":"Runway AI","capabilities":{"writing":12,"research":5,"coding":0,"image":68,"video":96,"speed":70,"cost_efficiency":63},"source_url":"https://runway.com/pricing/","last_checked":"2026-09-14","status":"active",
+      "plans":[
+        {"name":"Free","tier":"free","price":0,"currency":"USD","model_name":"試用対象モデル（Gen-4.5の利用可否は要確認）","benefit":"生成ツールを125クレジットで試用。","limits":"125クレジットは初回のみ。毎月の無料付与ではありません。","usages":["image","video"]},
+        {"name":"Standard","tier":"paid","price":15,"currency":"USD","model_name":"Gen-4.5 / Kling 3.0 / Nano Banana Pro など","benefit":"月625クレジット、動画・画像モデル、透かしなし。","limits":"月払い価格。年払いは月12 USD相当。生成秒数・解像度で消費が変わります。","usages":["image","video"]},
+        {"name":"Pro","tier":"paid","price":35,"currency":"USD","model_name":"Gen-4.5 などの動画・画像モデル","benefit":"月2,250クレジットと並列生成枠の拡大。","limits":"月払い価格。年払いは月28 USD相当。","usages":["image","video"]},
+        {"name":"Max","tier":"paid","price":95,"currency":"USD","model_name":"Gen-4.5 などの動画・画像モデル","benefit":"月9,500クレジットと未使用枠の1か月繰越。","limits":"月払い価格。年払いは月76 USD相当。大量制作向け。","usages":["image","video"]}
+      ]
+    }
   ]
 }

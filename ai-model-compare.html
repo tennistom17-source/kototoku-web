@@ -1,7 +1,373 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="用途・予算・重視したいことから、あなたに合う生成AI、モデル、使い方の型を提案します。"><meta property="og:title" content="生成AI・モデル比較＆使い方診断｜コトトク"><meta property="og:description" content="用途・予算・重視したいことから、あなたに合う生成AI、モデル、使い方の型を提案します。"><meta property="og:type" content="website"><meta property="og:url" content="https://tennistom17-source.github.io/kototoku-web/ai-model-compare.html"><meta name="theme-color" content="#0649a9"><title>生成AI・モデル比較＆使い方診断｜コトトク</title><link rel="canonical" href="https://tennistom17-source.github.io/kototoku-web/ai-model-compare.html"><link rel="icon" href="favicon.ico" sizes="any"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="assets/css/ai-model-compare.css"></head>
-<body class="model-tool"><a class="skip-link" href="#main">本文へ移動</a><nav aria-label="メインナビゲーション"><div class="wrap"><a class="brand" href="index.html"><span class="symbol" aria-hidden="true"></span><span><b>コトトク</b><small>できるを、もっと身近に。</small></span></a><button class="menu" aria-label="メニューを開く" aria-expanded="false" aria-controls="primary-navigation">☰</button><div class="navlinks" id="primary-navigation"><a href="index.html">ホーム</a><a href="diary.html">つくる日記</a><a href="ai-company.html">AIチーム</a><a href="ai-model-compare.html" aria-current="page">AI比較診断</a><a href="site-map.html">サイト案内</a></div></div></nav>
-<header class="tool-hero"><div class="wrap"><span class="kicker">AI MODEL COMPASS</span><h1>生成AI・モデル比較<br>＆使い方診断</h1><p>用途・予算・重視したいことから、あなたに合う生成AI、モデル、使い方の型を提案します。</p><div class="tool-intro"><div><b>何が分かる？</b><span>文章、調査、開発など、やりたいことに合う候補の見え方です。</span></div><div><b>使い方</b><span>5つ選ぶ → おすすめを読む → 料金と機能は公式情報で確認します。</span></div><div><b>大切なこと</b><span>順位を決める診断ではありません。自分に合う試し方を考えるための入口です。</span></div></div><div class="tool-signal" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><b>USE / BUDGET / FIT</b></div></div></header>
-<main id="main"><section class="tool-section" aria-labelledby="diagnosis-title"><div class="wrap"><div class="section-head"><span class="kicker">01 / DIAGNOSIS</span><h2 id="diagnosis-title">今の使い方を、5つ選ぶ。</h2><p>入力内容はこのブラウザ内だけで計算され、保存・送信されません。</p></div><form id="diagnosis-form" class="diagnosis-form"><fieldset><legend>1. 主な用途</legend><div class="choice-grid"><label><input required type="radio" name="usage" value="writing">文章・企画・資料作成</label><label><input type="radio" name="usage" value="research">調査・情報整理</label><label><input type="radio" name="usage" value="coding">プログラミング</label><label><input type="radio" name="usage" value="image">画像・デザイン</label><label><input type="radio" name="usage" value="video">動画制作</label><label><input type="radio" name="usage" value="ideas">日常の相談・アイデア出し</label></div></fieldset><fieldset><legend>2. 月額予算</legend><div class="choice-grid compact"><label><input required type="radio" name="budget" value="free">無料中心</label><label><input type="radio" name="budget" value="three-thousand">月3,000円程度</label><label><input type="radio" name="budget" value="ten-thousand">月1万円程度</label><label><input type="radio" name="budget" value="flexible">品質重視で予算は柔軟</label></div></fieldset><fieldset><legend>3. AIの利用経験</legend><div class="choice-grid compact"><label><input required type="radio" name="experience" value="beginner">初心者</label><label><input type="radio" name="experience" value="some">少し使える</label><label><input type="radio" name="experience" value="advanced">開発・自動化もしたい</label></div></fieldset><fieldset><legend>4. 重視したいこと</legend><div class="choice-grid compact"><label><input required type="radio" name="priority" value="cost">安さ</label><label><input type="radio" name="priority" value="balance">バランス</label><label><input type="radio" name="priority" value="quality">高品質</label><label><input type="radio" name="priority" value="speed">速さ</label><label><input type="radio" name="priority" value="development">開発支援</label></div></fieldset><fieldset><legend>5. 現在使っているもの</legend><div class="choice-grid compact"><label><input required type="radio" name="existing" value="chatgpt">ChatGPT</label><label><input type="radio" name="existing" value="github-copilot">GitHub Copilot</label><label><input type="radio" name="existing" value="canva">Canva</label><label><input type="radio" name="existing" value="none">特になし</label><label><input type="radio" name="existing" value="other">その他</label></div></fieldset><button class="primary-link" type="submit">おすすめを診断する <span aria-hidden="true">→</span></button><p id="form-error" class="form-error" role="alert" hidden>5つの質問すべてを選んでください。</p></form><section id="recommendation" class="recommendation" aria-live="polite" hidden></section></div></section>
-<section class="tool-section compare-section" aria-labelledby="compare-title"><div class="wrap"><div class="section-topline"><span class="kicker">02 / COMPARE</span><span id="data-date" class="section-number">データを読み込み中</span></div><div class="section-head"><h2 id="compare-title">用途ごとの見え方を比べる。</h2><p>能力値は絶対的な性能順位ではなく、コトトク内の用途別比較評価です。情報は変動します。最終確認日と公式情報を確認してください。</p></div><div id="model-filter" class="model-filter" aria-label="グラフに表示するサービス"></div><div class="chart-grid"><figure class="chart-panel"><figcaption><b>用途バランス</b><span>選んだサービスのレーダー</span></figcaption><svg id="radar-chart" viewBox="0 0 360 330" role="img" aria-label="用途別のレーダーチャート"></svg></figure><figure class="chart-panel"><figcaption><b>コスト感と総合品質</b><span>丸の大きさは速度</span></figcaption><svg id="bubble-chart" viewBox="0 0 520 330" role="img" aria-label="コスト感と総合品質のバブルチャート"></svg></figure></div><figure class="chart-panel rank-panel"><figcaption><b>用途別ランキング</b><span>選択中の比較対象から表示</span></figcaption><div id="bar-chart" class="bar-chart" role="img" aria-label="用途別ランキングの横棒グラフ"></div></figure><div class="model-table-wrap"><table id="model-table"><caption>比較データと公式情報</caption><thead><tr><th>サービス / モデル</th><th>主な向き</th><th>料金の目安</th><th>確認</th></tr></thead><tbody></tbody></table></div><p class="data-notice">料金、提供状況、利用上限、機能は変動します。契約前に必ず各サービスの公式情報を確認してください。</p></div></section></main>
-<footer><div class="wrap footer-main"><div><b>コトトク</b><p>AIを比べるためではなく、目的に合う一歩を選ぶための比較ツールです。</p></div><div class="footer-col"><b>サイト内</b><a href="index.html">ホーム</a><a href="diary.html">つくる日記</a><a href="site-map.html">サイト案内</a></div><div class="footer-col"><b>比較について</b><a href="#diagnosis-title">使い方診断</a><a href="#compare-title">比較データ</a></div><div class="footer-col"><b>大切にすること</b><p>個人情報を保存しません。AIの提案は、目的と公式情報を確認して選びます。</p></div></div><div class="wrap footer-bottom"><span>© 2026 コトトク（個人運営プロジェクト）</span><span>情報は変動します。公式情報を確認してください</span></div></footer><script src="site.js" defer></script><script src="assets/js/ai-model-compare.js" defer></script></body></html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="用途・予算・重視したいことから、あなたに合う生成AI、モデル、使い方の型を提案します。"
+    />
+    <meta
+      property="og:title"
+      content="生成AI・モデル比較＆使い方診断｜コトトク"
+    />
+    <meta
+      property="og:description"
+      content="用途・予算・重視したいことから、あなたに合う生成AI、モデル、使い方の型を提案します。"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://tennistom17-source.github.io/kototoku-web/ai-model-compare.html"
+    />
+    <meta name="theme-color" content="#0649a9" />
+    <title>生成AI・モデル比較＆使い方診断｜コトトク</title>
+    <link
+      rel="canonical"
+      href="https://tennistom17-source.github.io/kototoku-web/ai-model-compare.html"
+    />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="site.css" />
+    <link rel="stylesheet" href="assets/css/ai-model-compare.css" />
+  </head>
+  <body class="model-tool">
+    <a class="skip-link" href="#main">本文へ移動</a>
+    <nav aria-label="メインナビゲーション">
+      <div class="wrap">
+        <a class="brand" href="index.html"
+          ><span class="symbol" aria-hidden="true"></span
+          ><span
+            ><b>コトトク</b><small>できるを、もっと身近に。</small></span
+          ></a
+        ><button
+          class="menu"
+          aria-label="メニューを開く"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
+          ☰
+        </button>
+        <div class="navlinks" id="primary-navigation">
+          <a href="index.html">ホーム</a><a href="diary.html">つくる日記</a
+          ><a href="ai-company.html">AIチーム</a
+          ><a href="ai-model-compare.html" aria-current="page">AI比較診断</a
+          ><a href="site-map.html">サイト案内</a>
+        </div>
+      </div>
+    </nav>
+    <header class="tool-hero">
+      <div class="wrap">
+        <span class="kicker">AI MODEL COMPASS</span>
+        <h1>生成AI・モデル比較＆使い方診断</h1>
+        <p>
+          無料から上位プランまで。用途・料金・利用モデルを比較。
+        </p>
+        <p><a href="#model-guide-title">Terra・Solなどの使い分けと例題 ↓</a></p>
+      </div>
+    </header>
+    <main id="main">
+      <section class="tool-section" aria-labelledby="diagnosis-title">
+        <div class="wrap">
+          <div class="section-head">
+            <span class="kicker">01 / DIAGNOSIS</span>
+            <h2 id="diagnosis-title">用途と予算から、プランを選ぶ。</h2>
+            <p>
+              入力内容はこのブラウザ内だけで計算され、保存・送信されません。
+            </p>
+          </div>
+          <form id="diagnosis-form" class="diagnosis-form">
+            <fieldset>
+              <legend>1. 主な用途</legend>
+              <div class="choice-grid">
+                <label
+                  ><input
+                    required
+                    type="radio"
+                    name="usage"
+                    value="writing"
+                  />文章・企画・資料作成</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="usage"
+                    value="research"
+                  />調査・情報整理</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="usage"
+                    value="coding"
+                  />プログラミング</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="usage"
+                    value="image"
+                  />画像・デザイン</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="usage"
+                    value="video"
+                  />動画制作</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="usage"
+                    value="ideas"
+                  />日常の相談・アイデア出し</label
+                >
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>2. 月額予算</legend>
+              <div class="choice-grid compact">
+                <label
+                  ><input
+                    required
+                    type="radio"
+                    name="budget"
+                    value="free"
+                  />無料のみ</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="budget"
+                    value="three-thousand"
+                  />月3,000円程度</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="budget"
+                    value="ten-thousand"
+                  />月1万円程度</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="budget"
+                    value="custom"
+                  />予算を自分で指定</label
+                >
+              </div>
+              <div id="custom-budget-field" class="custom-budget-field" hidden>
+                <label for="custom-budget">月額予算の上限</label>
+                <div class="budget-amount"><input id="custom-budget" name="custom_budget" type="number" min="0" max="9007199254740991" step="1" inputmode="numeric" placeholder="例：5000" disabled><span>円 / 月</span></div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>3. AIの利用経験</legend>
+              <div class="choice-grid compact">
+                <label
+                  ><input
+                    required
+                    type="radio"
+                    name="experience"
+                    value="beginner"
+                  />初心者</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="experience"
+                    value="some"
+                  />少し使える</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="experience"
+                    value="advanced"
+                  />開発・自動化もしたい</label
+                >
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>4. 重視したいこと</legend>
+              <div class="choice-grid compact">
+                <label
+                  ><input
+                    required
+                    type="radio"
+                    name="priority"
+                    value="cost"
+                  />安さ</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="priority"
+                    value="balance"
+                  />バランス</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="priority"
+                    value="quality"
+                  />高品質</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="priority"
+                    value="speed"
+                  />速さ</label
+                ><label
+                  ><input
+                    type="radio"
+                    name="priority"
+                    value="development"
+                  />開発支援</label
+                >
+              </div>
+            </fieldset>
+            <div class="form-actions">
+              <button class="primary-link" type="submit" id="show-result" disabled>
+                結果を見る <span aria-hidden="true">→</span>
+              </button>
+              <button class="reset-button" type="reset" title="回答をすべてクリア">
+                <span aria-hidden="true">↺</span> リセット
+              </button>
+              <span id="form-status" role="status">データを読み込み中</span>
+            </div>
+            <p id="form-error" class="form-error" role="alert" hidden>
+              4つの質問すべてを選んでください。
+            </p>
+          </form>
+          <noscript><p>診断にはJavaScriptが必要です。ブラウザの設定で有効にしてください。</p></noscript>
+          <div id="load-error" role="alert" hidden>
+            <p>比較データを読み込めませんでした。接続を確認して再試行してください。</p>
+            <button type="button" id="retry-data" class="reset-button">データを再読み込み</button>
+          </div>
+          <section
+            id="recommendation"
+            class="recommendation"
+            aria-label="診断結果"
+            tabindex="-1"
+            hidden
+          ></section>
+        </div>
+      </section>
+      <section id="model-guide" class="tool-section model-guide" aria-labelledby="model-guide-title" hidden>
+        <div class="wrap">
+          <div class="section-head">
+            <span class="kicker">02 / MODEL GUIDE</span>
+            <h2 id="model-guide-title" tabindex="-1">モデルの使い分けと例題</h2>
+            <p id="guide-notice" class="data-notice"></p>
+          </div>
+          <div class="comparison-controls">
+            <label>モデル<select id="guide-model"></select></label>
+            <label>同じ条件で試す例題<select id="guide-example"></select></label>
+          </div>
+          <div id="guide-profile"></div>
+          <div class="guide-example-layout">
+            <section class="guide-example-panel" aria-labelledby="guide-prompt-title">
+              <div class="guide-heading"><h3 id="guide-prompt-title">例題</h3><button type="button" id="copy-guide-prompt" class="reset-button" title="例題をコピー" aria-label="例題をコピー"><span aria-hidden="true">⧉</span></button></div>
+              <label class="data-notice" for="guide-prompt">架空の条件・個人情報なし</label>
+              <textarea id="guide-prompt" readonly rows="8"></textarea>
+              <p id="guide-copy-status" role="status"></p>
+            </section>
+            <section class="guide-example-panel" aria-labelledby="guide-checks-title">
+              <h3 id="guide-checks-title">比べるポイント</h3>
+              <ul id="guide-checks"></ul>
+              <details class="guide-answer"><summary>確認用の答えを見る（モデルの実出力ではありません）</summary><pre id="guide-expected"></pre></details>
+            </section>
+          </div>
+          <p id="guide-comparison" class="guide-comparison"></p>
+          <details class="guide-efficiency" id="trial-records">
+            <summary>この例題の実測比較記録</summary>
+            <p class="data-notice">入力した記録はこのページ内だけで保持し、再読み込みで消えます。外部送信・自動実行は行いません。同じ例題・資料・利用環境で比べてください。1回の結果は性能全般の優劣を示しません。</p>
+            <form id="trial-form">
+              <div id="trial-inputs" class="guide-facts"></div>
+              <label class="trial-condition"><input type="checkbox" name="same_conditions">同じ例題・資料・利用環境で比較した</label>
+              <p id="trial-result" role="status"></p>
+              <button type="reset" class="reset-button">この例題の記録をクリア</button>
+            </form>
+          </details>
+          <details class="guide-efficiency"><summary>どれくらい違う？ 完成までの時間を比べる例</summary><div id="guide-efficiency-content"></div></details>
+          <details class="guide-efficiency"><summary>根拠情報の更新履歴</summary><p class="data-notice">コトトクによる確認・修正の記録です。提供元の発表日やモデルの性能向上を意味するものではありません。</p><ol id="guide-history"></ol></details>
+        </div>
+      </section>
+      <section
+        class="tool-section compare-section"
+        aria-labelledby="compare-title"
+      >
+        <div class="wrap">
+          <div class="section-topline">
+            <span class="kicker">03 / COMPARE</span
+            ><span id="data-date" class="section-number"
+              >データを読み込み中</span
+            >
+          </div>
+          <div class="section-head">
+            <h2 id="compare-title">無料・有料プランを比較。</h2>
+            <p>
+              サービス名とモデル名は別です。同じサービスでも、プランによって選べるモデルや利用上限が異なります。
+            </p>
+          </div>
+          <div class="comparison-controls">
+            <label>サービス<select id="service-filter"><option value="all">すべて</option></select></label>
+            <label>プラン<select id="plan-filter"><option value="all">無料・有料すべて</option><option value="free">無料のみ</option><option value="paid">有料のみ</option></select></label>
+            <label>比較する用途<select id="compare-usage"><option value="writing">文章・企画・資料作成</option><option value="research">調査・情報整理</option><option value="coding">プログラミング</option><option value="image">画像・デザイン</option><option value="video">動画制作</option><option value="ideas">日常の相談・アイデア出し</option></select></label>
+          </div>
+          <figure class="chart-panel rank-panel">
+            <figcaption>
+              <b id="ranking-title">用途別の適合目安</b><span>暫定値 / 100点満点</span>
+            </figcaption>
+            <p id="evaluation-note" class="data-notice"></p>
+            <div class="bar-scale" aria-hidden="true"><span>0 / 低い</span><span>50</span><span>100 / 高い</span></div>
+            <ol id="bar-chart" class="bar-chart" aria-describedby="evaluation-note"></ol>
+          </figure>
+          <p id="exchange-note" class="data-notice"></p>
+          <p id="table-count" role="status"></p>
+          <div class="model-table-wrap" tabindex="0" role="region" aria-label="プラン比較表">
+            <table id="model-table">
+              <caption>
+                プラン別の料金・利用モデル・公式情報
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">サービス / プラン</th>
+                  <th scope="col">利用モデル / 主な違い</th>
+                  <th scope="col">料金・利用条件</th>
+                  <th scope="col">公式情報</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="data-notice">
+            料金、提供状況、利用上限、機能は変動します。契約前に必ず各サービスの公式情報を確認してください。
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-main">
+        <div>
+          <b>コトトク</b>
+          <p>
+            AIを比べるためではなく、目的に合う一歩を選ぶための比較ツールです。
+          </p>
+        </div>
+        <div class="footer-col">
+          <b>サイト内</b><a href="index.html">ホーム</a
+          ><a href="diary.html">つくる日記</a
+          ><a href="site-map.html">サイト案内</a>
+        </div>
+        <div class="footer-col">
+          <b>比較について</b><a href="#diagnosis-title">使い方診断</a
+          ><a href="#compare-title">比較データ</a>
+        </div>
+        <div class="footer-col">
+          <b>大切にすること</b>
+          <p>
+            個人情報を保存しません。AIの提案は、目的と公式情報を確認して選びます。
+          </p>
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <span>© 2026 コトトク（個人運営プロジェクト）</span
+        ><span>情報は変動します。公式情報を確認してください</span>
+      </div>
+    </footer>
+    <script src="site.js" defer></script>
+    <script src="assets/js/ai-model-compare-core.js" defer></script>
+    <script src="assets/js/ai-model-compare.js" defer></script>
+  </body>
+</html>
