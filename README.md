@@ -11,7 +11,26 @@
 - `ai-company.html`：AIチーム。運営者が最終判断を行う、架空の役割設定。既存URLを維持。
 - `faq.html`：よくある質問。GitHub Pagesでの公開やAIチームについてのQ&A。
 - `site-map.html`：閲覧者向けのサイト案内。各ページ・主要セクションを部屋に見立てたフロアマップ。全ページのナビゲーションから移動できる。
+- `ai-model-compare.html`：生成AI・モデル比較と使い方診断。回答はブラウザ内だけで点数化し、保存・送信しない。
 - `site.css` / `site.js`：全ページ共通のデザインとメニュー・動画エラー表示処理。
+
+## AI比較診断
+
+- `assets/css/ai-model-compare.css`：比較ページ専用のレスポンシブスタイル。
+- `assets/js/ai-model-compare.js`：JSONを読み込み、ルールベースで診断、SVGのレーダー・バブルチャート、用途別の横棒グラフを表示。外部JavaScriptライブラリやAPIキーは使わない。
+- `data/models.json`：表示するサービス・モデル、プランの目安、公式URL、公式情報URL、最終確認日、用途別比較評価。評価は絶対的な性能順位ではない。
+- `data/scoring-rules.json`：質問の回答ごとに用途別の能力値へ加える重み、既存利用サービスの加点、「要評価」モデルの減点を管理。診断規則をJavaScriptへ直接書かない。
+- 初期データの価格・モデル名は、2026-09-14に取得した各サービスの公式価格・製品ページで確認できた内容だけを記載。地域、税、利用上限、提供状況は変動するため、契約前にリンク先の公式情報を確認する。
+- `evaluation_status` が `要評価` のデータは、公式ページ上のサービス・プランを確認できても、コトトク内の能力評価を人が確定していない項目。診断では減点し、最上位に出にくくする。
+
+### 自動更新
+
+- `scripts/update_models.py` は、各データの `source_url` だけを取得する。公式ページを安全に構造化して確認できない場合、モデル名・料金・提供状況・能力値を推測で書き換えない。
+- 取得失敗時は `models.json` の `last_checked` を更新せず、標準出力と `data/update-log.json` に取得失敗理由を残す。能力値は自動更新しない。
+- 新しいモデルの自動追加もしない。人が公式情報を確認して `evaluation_status: "要評価"` として追加し、評価後に点数を設定する。
+- `.github/workflows/update-model-data.yml` は毎日1回（UTC 02:17）と手動実行でPythonを実行する。`models.json` に検証済みの差分が発生した場合だけ、更新ログとともに自動コミット・pushする。今回の運用では、この自動公開を明示的な例外として採用している。
+- 実行失敗はGitHubの `Actions` からワークフロー `Update official AI model data` を開き、`Check official sources and update safe fields` のログを確認する。Actionがpushできない時は、リポジトリの `Settings` → `Actions` → `General` で `Workflow permissions` の書き込み権限を確認する。
+- ローカルで確認する場合は、リポジトリ直下で `python scripts/update_models.py` を実行する。比較画面はJSON読み込みがあるため、`python -m http.server 8765 --bind 127.0.0.1` で配信して確認する。
 
 ## デザイン更新
 
