@@ -3,8 +3,8 @@
 .home-index .index-header .index-tagline{margin:2px 0 0;color:var(--deep);font-size:17px;font-weight:700}
 .home-index .index-header .index-purpose{max-width:720px;margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.75}
 .home-index .purpose-points{display:flex;gap:0;list-style:none;margin:16px 0 0;padding:0;border-top:1px solid #12375a24}
-.home-index .purpose-points li{display:flex;gap:8px;align-items:baseline;padding:8px 18px 0 0;margin-right:18px;border-right:1px solid #12375a24;font-size:12px;color:var(--muted)}
-.home-index .purpose-points li:last-child{border-right:0}.home-index .purpose-points b{color:#17644f;font-size:13px}.home-index .purpose-points span{white-space:nowrap}
+.home-index .purpose-points li{display:flex;flex-wrap:wrap;min-width:0;gap:4px 8px;align-items:baseline;padding:8px 18px 0 0;margin-right:18px;border-right:1px solid #12375a24;font-size:12px;color:var(--muted)}
+.home-index .purpose-points li:last-child{border-right:0}.home-index .purpose-points b{color:#17644f;font-size:13px}.home-index .purpose-points span{white-space:normal}
 .home-index .index-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;padding-block:28px 36px;align-items:start}
 .home-index .index-layout section{padding:0;min-width:0}
 .home-index .index-layout h2{font-size:20px;line-height:1.5;margin:0 0 12px}
