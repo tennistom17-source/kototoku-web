@@ -62,7 +62,6 @@
         <p>
           無料から上位プランまで。用途・料金・利用モデルを比較。
         </p>
-        <p><a href="#model-guide-title">Terra・Solなどの使い分けと例題 ↓</a></p>
       </div>
     </header>
     <main id="main">
@@ -243,53 +242,13 @@
           ></section>
         </div>
       </section>
-      <section id="model-guide" class="tool-section model-guide" aria-labelledby="model-guide-title" hidden>
-        <div class="wrap">
-          <div class="section-head">
-            <span class="kicker">02 / MODEL GUIDE</span>
-            <h2 id="model-guide-title" tabindex="-1">モデルの使い分けと例題</h2>
-            <p id="guide-notice" class="data-notice"></p>
-          </div>
-          <div class="comparison-controls">
-            <label>モデル<select id="guide-model"></select></label>
-            <label>同じ条件で試す例題<select id="guide-example"></select></label>
-          </div>
-          <div id="guide-profile"></div>
-          <div class="guide-example-layout">
-            <section class="guide-example-panel" aria-labelledby="guide-prompt-title">
-              <div class="guide-heading"><h3 id="guide-prompt-title">例題</h3><button type="button" id="copy-guide-prompt" class="reset-button" title="例題をコピー" aria-label="例題をコピー"><span aria-hidden="true">⧉</span></button></div>
-              <label class="data-notice" for="guide-prompt">架空の条件・個人情報なし</label>
-              <textarea id="guide-prompt" readonly rows="8"></textarea>
-              <p id="guide-copy-status" role="status"></p>
-            </section>
-            <section class="guide-example-panel" aria-labelledby="guide-checks-title">
-              <h3 id="guide-checks-title">比べるポイント</h3>
-              <ul id="guide-checks"></ul>
-              <details class="guide-answer"><summary>確認用の答えを見る（モデルの実出力ではありません）</summary><pre id="guide-expected"></pre></details>
-            </section>
-          </div>
-          <p id="guide-comparison" class="guide-comparison"></p>
-          <details class="guide-efficiency" id="trial-records">
-            <summary>この例題の実測比較記録</summary>
-            <p class="data-notice">入力した記録はこのページ内だけで保持し、再読み込みで消えます。外部送信・自動実行は行いません。同じ例題・資料・利用環境で比べてください。1回の結果は性能全般の優劣を示しません。</p>
-            <form id="trial-form">
-              <div id="trial-inputs" class="guide-facts"></div>
-              <label class="trial-condition"><input type="checkbox" name="same_conditions">同じ例題・資料・利用環境で比較した</label>
-              <p id="trial-result" role="status"></p>
-              <button type="reset" class="reset-button">この例題の記録をクリア</button>
-            </form>
-          </details>
-          <details class="guide-efficiency"><summary>どれくらい違う？ 完成までの時間を比べる例</summary><div id="guide-efficiency-content"></div></details>
-          <details class="guide-efficiency"><summary>根拠情報の更新履歴</summary><p class="data-notice">コトトクによる確認・修正の記録です。提供元の発表日やモデルの性能向上を意味するものではありません。</p><ol id="guide-history"></ol></details>
-        </div>
-      </section>
       <section
         class="tool-section compare-section"
         aria-labelledby="compare-title"
       >
         <div class="wrap">
           <div class="section-topline">
-            <span class="kicker">03 / COMPARE</span
+            <span class="kicker">02 / COMPARE</span
             ><span id="data-date" class="section-number"
               >データを読み込み中</span
             >

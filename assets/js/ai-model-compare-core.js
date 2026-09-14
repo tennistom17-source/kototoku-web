@@ -55,20 +55,7 @@
     return Object.fromEntries(Object.entries(result).map(([tier, items]) => [tier, items.slice(0, rules.maximum_recommendations)]));
   }
 
-  function compareTrials(first, second) {
-    const valid = trial => ['wait', 'review', 'passed'].every(key => String(trial[key] ?? '').trim() !== '')
-      && Number.isFinite(Number(trial.wait)) && Number(trial.wait) >= 0
-      && Number.isFinite(Number(trial.review)) && Number(trial.review) >= 0
-      && Number.isInteger(Number(trial.passed)) && Number(trial.passed) >= 0 && Number(trial.passed) <= 4;
-    if (!valid(first) || !valid(second)) return null;
-    const firstTotal = Number(first.wait) + Number(first.review);
-    const secondTotal = Number(second.wait) + Number(second.review);
-    if (!Number.isFinite(firstTotal) || !Number.isFinite(secondTotal)) return null;
-    return { firstTotal, secondTotal, difference: Math.abs(firstTotal - secondTotal),
-      qualityMatched: Number(first.passed) === 4 && Number(second.passed) === 4 };
-  }
-
-  const api = { complete, budgetLimit, monthlyYen, score, candidates, compareTrials };
+  const api = { complete, budgetLimit, monthlyYen, score, candidates };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.ModelCompare = api;
 })(globalThis);

@@ -6,51 +6,6 @@
   const escape = value => String(value).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
   const format = value => value.toLocaleString("ja-JP");
   let data, rules, models = [], ready = false;
-  const trialRecords = new Map();
-
-  function renderTrialResult() {
-    const values = Object.fromEntries(new FormData(find("#trial-form")));
-    const result = core.compareTrials(
-      { wait: values.first_wait, review: values.first_review, passed: values.first_passed },
-      { wait: values.second_wait, review: values.second_review, passed: values.second_passed }
-    );
-    const output = find("#trial-result");
-    if (!result) {
-      output.textContent = "2つの試行の時間（0秒以上）と合格項目数（0〜4）を入力してください。";
-      return;
-    }
-    const summary = `試行A：${format(result.firstTotal)}秒 / 試行B：${format(result.secondTotal)}秒。`;
-    if (!values.same_conditions || values.first_environment !== values.second_environment) {
-      output.textContent = `${summary}条件が同じか未確認のため、比較判定は保留です。`;
-    } else if (!result.qualityMatched) {
-      output.textContent = `${summary}両方が4項目に合格していないため、時間だけでは優劣を判定できません。`;
-    } else {
-      output.textContent = `${summary}両方4項目合格。${result.difference === 0 ? "合計時間は同じです。" : `今回の記録では試行${result.firstTotal < result.secondTotal ? "A" : "B"}が${format(result.difference)}秒速く完了しました。`}別の課題や試行でも同じ差が出るとは限りません。`;
-    }
-  }
-
-  function renderTrials() {
-    const exampleId = find("#guide-example").value;
-    const record = trialRecords.get(exampleId) || {};
-    const options = data.model_guide.profiles.map(profile => `<option value="${escape(profile.id)}">${escape(profile.name)}</option>`).join("");
-    find("#trial-inputs").innerHTML = ['first', 'second'].map((prefix, index) => `<fieldset><legend>試行${index === 0 ? "A" : "B"}</legend>
-      <label>モデル<select name="${prefix}_model">${options}</select></label>
-      <label>利用環境<select name="${prefix}_environment"><option>Chat</option><option>Work</option><option>Codex</option><option>API</option></select></label>
-      <label>推論設定<select name="${prefix}_reasoning"><option>既定 / 不明</option><option>Instant</option><option>Medium</option><option>High</option><option>Extra High</option><option>Pro</option></select></label>
-      <label>生成待ち（秒）<input type="number" min="0" step="any" inputmode="decimal" name="${prefix}_wait" required></label>
-      <label>確認・手直し（秒）<input type="number" min="0" step="any" inputmode="decimal" name="${prefix}_review" required></label>
-      <label>合格項目数（4項目中）<input type="number" min="0" max="4" step="1" inputmode="numeric" name="${prefix}_passed" required></label></fieldset>`).join("");
-    const form = find("#trial-form");
-    form.elements.first_model.value = 'terra';
-    form.elements.second_model.value = 'sol';
-    form.elements.first_environment.value = 'Codex';
-    form.elements.second_environment.value = 'Codex';
-    form.elements.same_conditions.checked = Boolean(record.same_conditions);
-    for (const [key, value] of Object.entries(record)) {
-      if (key !== 'same_conditions' && form.elements.namedItem(key)) form.elements.namedItem(key).value = value;
-    }
-    renderTrialResult();
-  }
 
   function priceText(plan) {
     const yen = core.monthlyYen(plan, data.usd_to_jpy);
@@ -66,57 +21,13 @@
     return `<a href="${escape(model.source_url)}" target="_blank" rel="noopener">公式料金・モデル情報 ↗</a><small>${model.last_checked ? `確認日：${escape(model.last_checked)}` : "料金・モデル対応は未確認"}</small>`;
   }
 
-  function guideLink(model) {
-    if (model.service_name !== "ChatGPT") return "";
-    const profile = model.plan.name === "Pro" ? "astra" : model.plan.name === "Plus" ? "sol" : "luna";
-    return `<a class="guide-link" href="#model-guide-title" data-guide-model="${profile}">モデルの使いどころ・根拠・例題 ↓</a>`;
-  }
-
-  function renderGuide() {
-    const guide = data.model_guide;
-    const profile = guide.profiles.find(item => item.id === find("#guide-model").value);
-    const example = guide.examples.find(item => item.id === find("#guide-example").value);
-    find("#guide-profile").innerHTML = `<h3>${escape(profile.name)}：${escape(profile.role)}</h3>
-      <div class="guide-facts"><div><h4>公式に確認できること</h4><p>${escape(profile.fact)}</p>
-      <p><b>使える場所・条件</b><br>${escape(profile.availability)}</p>
-      <a href="${escape(guide.source_url)}" target="_blank" rel="noopener">${escape(guide.source_title)} ↗</a><small>確認日：${escape(guide.checked_at)}</small></div>
-      <div><h4>使い分けの提案（コトトク）</h4><p>${escape(profile.suggestion)}</p><p><b>替える目安・替えなくてよい場合</b><br>${escape(profile.switch_when)}</p></div></div>`;
-    find("#guide-prompt-title").textContent = example.title;
-    find("#guide-prompt").value = example.prompt;
-    find("#guide-checks").innerHTML = example.checks.map(check => `<li>${escape(check)}</li>`).join("");
-    find("#guide-expected").textContent = example.expected;
-    find("#guide-comparison").textContent = example.comparison;
-    find("#guide-copy-status").textContent = "";
-    find(".guide-answer").open = false;
-    renderTrials();
-  }
-
-  function initGuide() {
-    const guide = data.model_guide;
-    find("#guide-notice").textContent = guide.notice;
-    find("#guide-model").innerHTML = guide.profiles.map(profile => `<option value="${escape(profile.id)}">${escape(profile.name)} / ${escape(profile.role)}</option>`).join("");
-    find("#guide-example").innerHTML = guide.examples.map(example => `<option value="${escape(example.id)}">${escape(example.title)}</option>`).join("");
-    find("#guide-model").value = "terra";
-    find("#guide-example").value = "coding";
-    find("#guide-history").innerHTML = guide.history.map(entry => `<li><b>${escape(entry.date)} / ${escape(entry.kind)}</b><p>${escape(entry.change)}</p><a href="${escape(entry.source_url)}" target="_blank" rel="noopener">確認した公式情報 ↗</a></li>`).join("");
-    const efficiency = guide.efficiency_example;
-    const firstTotal = efficiency.first.wait_seconds + efficiency.first.review_seconds;
-    const secondTotal = efficiency.second.wait_seconds + efficiency.second.review_seconds;
-    const duration = seconds => `${Math.floor(seconds / 60)}分${seconds % 60 ? `${seconds % 60}秒` : ""}`;
-    find("#guide-efficiency-content").innerHTML = `<p class="guide-disclaimer">${escape(efficiency.label)}</p><dl class="efficiency-times">
-      ${[efficiency.first, efficiency.second].map(trial => `<div><dt>${escape(trial.label)}</dt><dd>生成待ち ${trial.wait_seconds}秒 + 確認・手直し ${duration(trial.review_seconds)}<br><b>合計 ${duration(trial.wait_seconds + trial.review_seconds)}</b></dd></div>`).join("")}</dl>
-      <p><b>この仮定では${duration(firstTotal - secondTotal)}短縮（約${Math.round((firstTotal - secondTotal) / firstTotal * 100)}%）。</b>待ち時間が長くても、手直し込みで早く終わる場合があります。</p><p>${escape(efficiency.note)}</p>`;
-    renderGuide();
-    find("#model-guide").hidden = false;
-  }
-
   function card(model) {
     const plan = model.plan;
     return `<article class="recommend-card ${plan.tier}" data-service="${escape(model.service_name)}" data-plan="${escape(plan.name)}">
       <span class="recommend-meta">${plan.tier === "free" ? "無料" : "有料"} / ${escape(plan.name)}</span>
       <h4>${escape(model.service_name)}</h4><p class="plan-price">${escape(priceText(plan))}</p>
       <p><b>${escape(plan.model_name)}</b></p><p>${escape(plan.benefit)}</p>
-      <p class="plan-limit">${escape(plan.limits)}</p>${official(model)}${guideLink(model)}</article>`;
+      <p class="plan-limit">${escape(plan.limits)}</p>${official(model)}</article>`;
   }
 
   function renderResult(answers) {
@@ -168,7 +79,7 @@
       .flatMap(model => model.plans.filter(plan => tier === "all" || plan.tier === tier).map(plan => ({ ...model, plan })));
     find("#model-table tbody").innerHTML = items.map(model => `<tr>
       <th scope="row">${escape(model.service_name)}<small>${escape(model.plan.name)} / ${model.plan.tier === "free" ? "無料" : model.plan.tier === "paid" ? "有料" : "要確認"}</small></th>
-      <td data-label="モデル・主な違い"><b>${escape(model.plan.model_name)}</b><small>${escape(model.plan.benefit)}</small>${guideLink(model)}</td>
+      <td data-label="モデル・主な違い"><b>${escape(model.plan.model_name)}</b><small>${escape(model.plan.benefit)}</small></td>
       <td data-label="料金・利用条件"><b>${escape(priceText(model.plan))}</b><small>${escape(model.plan.limits)}</small></td>
       <td data-label="公式情報">${official(model)}</td></tr>`).join("") || '<tr><td colspan="4">この条件に一致するプランはありません。</td></tr>';
     find("#table-count").textContent = `${items.length}件のプラン`;
@@ -203,7 +114,6 @@
       find("#exchange-note").textContent = data.exchange_note;
       ready = true;
       find("#show-result").disabled = false;
-      initGuide();
       renderComparison();
       updateDiagnosis();
     } catch {
@@ -241,45 +151,6 @@
     renderComparison();
   });
   for (const selector of ["#service-filter", "#plan-filter", "#compare-usage"]) find(selector).addEventListener("change", renderComparison);
-  find("#guide-model").addEventListener("change", () => {
-    const profile = data.model_guide.profiles.find(item => item.id === find("#guide-model").value);
-    find("#guide-example").value = profile.example_id;
-    renderGuide();
-  });
-  find("#guide-example").addEventListener("change", renderGuide);
-  document.addEventListener("click", event => {
-    const link = event.target.closest("[data-guide-model]");
-    if (!link || !ready) return;
-    find("#guide-model").value = link.dataset.guideModel;
-    const profile = data.model_guide.profiles.find(item => item.id === link.dataset.guideModel);
-    const usage = form.querySelector('[name="usage"]:checked')?.value;
-    const example = data.model_guide.examples.find(item => item.usages.includes(usage));
-    find("#guide-example").value = example?.id || profile.example_id;
-    renderGuide();
-    find("#model-guide-title").focus({ preventScroll: true });
-  });
-  find("#copy-guide-prompt").addEventListener("click", async () => {
-    const prompt = find("#guide-prompt");
-    const text = prompt.value;
-    try {
-      await navigator.clipboard.writeText(text);
-      if (prompt.value === text) find("#guide-copy-status").textContent = "例題をコピーしました。";
-    } catch {
-      prompt.focus();
-      prompt.select();
-      find("#guide-copy-status").textContent = "自動コピーできませんでした。選択された例題を手動でコピーしてください。";
-    }
-  });
   find("#retry-data").addEventListener("click", loadData);
-  find("#trial-form").addEventListener("input", () => {
-    trialRecords.set(find("#guide-example").value, Object.fromEntries(new FormData(find("#trial-form"))));
-    renderTrialResult();
-  });
-  find("#trial-form").addEventListener("submit", event => event.preventDefault());
-  find("#trial-form").addEventListener("reset", event => {
-    event.preventDefault();
-    trialRecords.delete(find("#guide-example").value);
-    renderTrials();
-  });
   loadData();
 })();

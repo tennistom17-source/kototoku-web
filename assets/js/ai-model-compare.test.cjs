@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { complete, monthlyYen, candidates, compareTrials } = require('./ai-model-compare-core.js');
+const { complete, monthlyYen, candidates } = require('./ai-model-compare-core.js');
 const rules = require('../../data/scoring-rules.json');
 const answers = { usage: 'coding', budget: 'three-thousand', experience: 'beginner', priority: 'development' };
 const models = [{
@@ -35,18 +35,6 @@ test('one affordable paid plan per service and no results before completion', ()
 });
 
 const data = require('../../data/models.json');
-
-test('measured comparisons require valid records and distinguish quality from speed', () => {
-  const first = { wait: '30', review: '480', passed: '4' };
-  const second = { wait: '90', review: '120', passed: '4' };
-  assert.deepEqual(compareTrials(first, second), { firstTotal: 510, secondTotal: 210, difference: 300, qualityMatched: true });
-  assert.equal(compareTrials(first, { ...second, passed: '3' }).qualityMatched, false);
-  assert.equal(compareTrials(first, first).difference, 0);
-  for (const value of ['', '-1', 'Infinity', 'abc']) assert.equal(compareTrials(first, { ...second, wait: value }), null);
-  assert.equal(compareTrials(first, { ...second, passed: '5' }), null);
-  assert.equal(compareTrials(first, { ...second, passed: '1.5' }), null);
-  assert.equal(compareTrials(first, { wait: '0', review: '0', passed: '4' }).secondTotal, 0);
-});
 
 test('curated ChatGPT paid recommendation includes GPT-6 for quality within 3000 yen', () => {
   const result = candidates(data.models, { ...answers, usage: 'writing', priority: 'quality' }, rules, data.usd_to_jpy);
@@ -98,25 +86,8 @@ test('invalid custom budgets never yield recommendations, presets ignore hidden 
   assert.equal(complete({ ...answers, custom_budget: '-1' }), true);
 });
 
-test('model guidance separates official facts, suggestions and non-measured examples', () => {
-  const guide = data.model_guide;
-  assert.match(guide.source_url, /^https:\/\/help\.openai\.com\//);
-  assert.match(guide.notice, /未実測/);
-  assert.equal(new Set(guide.profiles.map(profile => profile.id)).size, guide.profiles.length);
-  for (const profile of guide.profiles) {
-    assert.ok(profile.fact && profile.availability && profile.suggestion && profile.switch_when);
-    assert.ok(guide.examples.some(example => example.id === profile.example_id));
-  }
-  for (const usage of Object.keys(rules.usage)) assert.ok(guide.examples.some(example => example.usages.includes(usage)));
-  for (const example of guide.examples) assert.ok(example.prompt && example.expected && example.checks.length === 4 && example.comparison);
-  assert.match(guide.efficiency_example.label, /実測値ではありません/);
-  const { first, second } = guide.efficiency_example;
-  assert.equal(first.wait_seconds + first.review_seconds - second.wait_seconds - second.review_seconds, 300);
-});
-
-test('Plus guidance distinguishes Astra in Work and Codex from GPT-6 Pro in Chat', () => {
+test('Plus distinguishes Astra in Work and Codex from GPT-6 Pro in Chat', () => {
   const plus = data.models.find(model => model.service_name === 'ChatGPT').plans.find(plan => plan.name === 'Plus');
   assert.match(plus.model_name, /Work・Codex：GPT-6 Astra/);
   assert.match(plus.limits, /通常チャットのGPT-6 Proは含まれません/);
-  assert.match(data.model_guide.profiles.find(profile => profile.id === 'terra').availability, /通常のChatGPTチャットでは選択できません/);
 });
