@@ -7,6 +7,8 @@ export const roles = {
 };
 const genres = ['work', 'relationships', 'family', 'future', 'feelings'];
 const destinations = ['chatgpt', 'gemini', 'claude', 'copilot', 'other'];
+const requestIntervalMs = 10000;
+const processingLockMs = 120000;
 const stringField = { type: 'string' };
 const schema = {
   type: 'object', additionalProperties: false,
@@ -26,7 +28,13 @@ const instructions = `あなたは日常の軽い迷いを整理するAIです�
 指定された3役それぞれについて、この相談の具体的な事情に応じたopinion（80字以内）、question（60字以内）、action（60字以内）を考えてください。汎用的な定型文を繰り返さないでください。
 役の年齢や関係を能力の根拠にせず、実在人物・専門家・独立した3社の合意と偽らないでください。不明な事情は作らず、問いとして確認してください。
 commonとdifferencesは各100字以内、nextStepは80字以内で簡潔にまとめてください。
-promptは400字以内。利用者が選んだ生成AIへ貼り付ける、一人称の引き継ぎ依頼です。本人の相談内容、3役で分かった点、未確認事項を要約し、次のAIに必要な確認質問と具体的な選択肢の整理を依頼してください。結論を強制せず本人が判断する形にしてください。
+promptは800字以内。利用者が選んだ生成AIへ貼り付ける、完成した一人称の引き継ぎ依頼です。先頭で貼り付け先AIに「日常の意思決定を支える、慎重で具体的な対話コーチ」として応答するよう依頼してください。
+本人の相談内容、3役で分かった点、未確認事項を具体的に要約し、以下の回答手順を守るよう依頼してください：
+1. 相談者の迷いを短く受け止め、現時点で分かっている事実と推測・希望を分ける。
+2. 判断に必要な確認質問を、答えやすい順に最大3問だけ尋ねる。すでに書かれた内容は聞き直さない。
+3. 取り得る選択肢を2〜3案示し、それぞれについて向く条件、良い点、負担・注意点を具体的に比較する。
+4. 今すぐ決めなくてよい前提で、失敗しても戻しやすい小さな試し方と、その後に見直す基準を提案する。
+断定・診断・説教・過度な励ましは避け、情報が足りない点は推測で埋めず質問してください。結論を強制せず、本人が判断できる材料を日本語で提示するよう依頼してください。
 医療・法的結論・重大な金銭判断・犯罪の助言、未成年の深刻な悩み、自傷他害、虐待や差し迫った危険は対象外です。対象外、危険、判断不能ならsafe=falseにし、助言や引き継ぎ文は空文字にしてください。診断・危険な対決・依存を促さないでください。
 安全な日常相談だけsafe=trueとしてください。`;
 
@@ -63,7 +71,6 @@ export function approvedConfig(env, now) {
 
 export async function reserve(storage, requestId, now) {
   const month = monthKey(now);
-  const day = new Date(now + 9 * 3600000).toISOString().slice(0, 10);
   return storage.transaction(async transaction => {
     if (await transaction.get('hold')) return 'BUDGET_REVIEW';
     const ledger = await transaction.get(month) || { yen: 0, count: 0, days: {}, ids: [] };
@@ -72,15 +79,13 @@ export async function reserve(storage, requestId, now) {
       !ledger.days || Object.values(ledger.days).some(count => !Number.isInteger(count) || count < 0)) throw new Error('INVALID_LEDGER');
     if (ledger.ids.includes(requestId)) return 'DUPLICATE';
     if (ledger.yen + 6 > 600 || ledger.count >= 100) return 'MONTHLY_LIMIT';
-    if ((ledger.days[day] || 0) >= 10) return 'DAILY_LIMIT';
     const gate = await transaction.get('gate') || { until: 0, last: 0 };
-    if (gate.until > now || gate.last + 60000 > now) return 'BUSY';
+    if (gate.until > now || gate.last + requestIntervalMs > now) return 'BUSY';
     ledger.yen += 6;
     ledger.count += 1;
-    ledger.days[day] = (ledger.days[day] || 0) + 1;
     ledger.ids.push(requestId);
     await transaction.put(month, ledger);
-    await transaction.put('gate', { until: now + 120000, last: now, requestId });
+    await transaction.put('gate', { until: now + processingLockMs, last: now, requestId });
     return null;
   });
 }
@@ -90,7 +95,22 @@ async function openAI(env, path, body, transport) {
     method: 'POST', headers: { Authorization: `Bearer ${env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(body), signal: AbortSignal.timeout(20000)
   });
-  if (!response.ok) throw new Error('UPSTREAM_ERROR');
+  if (!response.ok) {
+    if (env.OPENAI_AUTH_DIAGNOSTICS === 'true' && (response.status === 401 || response.status === 403)) {
+      let error = {};
+      try {
+        const payload = await response.json();
+        error = {
+          message: typeof payload?.error?.message === 'string' ? payload.error.message.slice(0, 500) : undefined,
+          code: typeof payload?.error?.code === 'string' ? payload.error.code : undefined,
+          type: typeof payload?.error?.type === 'string' ? payload.error.type : undefined
+        };
+      } catch {}
+      console.warn('OpenAI authorization rejected', { path, status: response.status, error });
+    }
+    console.error('OpenAI request failed', { path, status: response.status });
+    throw new Error(`UPSTREAM_${response.status}`);
+  }
   return response.json();
 }
 
@@ -144,8 +164,10 @@ export class ConsultationBudget {
       const result = await generate(this.env, input);
       return json(result);
     } catch (error) {
+      console.error('Consultation generation failed', { message: error.message });
       if (error.message === 'COST_UNVERIFIED') await this.state.storage.put('hold', true);
-      return json({ code: 'GENERATION_FAILED' }, 503);
+      const code = /^(UPSTREAM_\d{3}|SAFETY_UNAVAILABLE|INPUT_TOO_LARGE|INCOMPLETE|INVALID_OUTPUT)$/.test(error.message) ? error.message : 'GENERATION_FAILED';
+      return json({ code }, 503);
     } finally {
       await this.state.storage.transaction(async transaction => {
         const gate = await transaction.get('gate');
@@ -158,7 +180,8 @@ export class ConsultationBudget {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin');
-    if (!env.ALLOWED_ORIGIN || origin !== env.ALLOWED_ORIGIN) return json({ code: 'FORBIDDEN' }, 403);
+    const allowed = origin === env.ALLOWED_ORIGIN || origin === env.LOCAL_TEST_ORIGIN;
+    if (!env.ALLOWED_ORIGIN || !allowed) return json({ code: 'FORBIDDEN' }, 403);
     if (new URL(request.url).pathname !== '/consult') return json({ code: 'NOT_FOUND' }, 404, origin);
     if (request.method === 'OPTIONS') return json({}, 200, origin);
     if (request.method !== 'POST') return json({ code: 'METHOD_NOT_ALLOWED' }, 405, origin);

@@ -5,7 +5,7 @@
 <meta name="description" content="悩みと3つの視点をまとめて、ChatGPT・Gemini・Claudeなどに貼り付ける質問文を作る無料ツール。自動送信はしません。">
 <meta name="referrer" content="no-referrer">
 <meta name="consultation-api" content="https://kototoku-consultation.ototoku--aini-roject.workers.dev/consult">
-<meta name="consultation-ready" content="false">
+<meta name="consultation-ready" content="true">
 <title>コトトク 多視点相談室｜生成AIへの質問文をつくる</title>
 <link rel="icon" href="favicon.ico"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="assets/css/life-consultation.css">
 </head>
@@ -27,10 +27,9 @@
 <fieldset class="advisor-settings" aria-describedby="selection-status"><legend>相談役を3人選ぶ</legend><div id="advisor-options" class="advisor-options"></div><p id="selection-status" class="field-note" role="status"></p></fieldset>
 <p class="field-note">相談役は生成AIにお願いする架空の役割です。年齢や関係が意見の正しさを保証するものではありません。</p>
 <label for="target-ai">質問文を使う生成AI</label><select id="target-ai" name="target-ai"><option value="chatgpt">ChatGPT（チャッピー）</option><option value="gemini">Gemini</option><option value="claude">Claude</option><option value="copilot">Microsoft Copilot</option><option value="other">その他の生成AI（汎用）</option></select>
-<div class="handoff-actions"><a id="selected-ai-link" class="secondary-button" target="_blank" rel="noopener noreferrer" hidden></a></div>
 <p class="field-note">質問文は各サービスで使える共通形式です。生成AIの選択で渡す相手の表記と移動先が変わります。</p>
 <label class="safety-check"><input id="urgent" type="checkbox">安全が心配、または医療・法律・投資・借金など重大な判断に関する相談です</label>
-<div id="sending-explanation" class="sending-explanation"><h3>相談を送ると、どうなるの？</h3><p><strong>Cloudflare（クラウドフレア）は、このサイトの受付・中継を担当するサービスです。</strong>回答を考えるAIではありません。利用できる回数や予算を確認し、受付できるときだけ相談をOpenAIへ渡します。運営者のAPIキー（AIを使うための秘密の鍵）を、公開ページに置かずに扱う役割もあります。</p><p><strong>現在は正式開始前です。</strong>この画面から相談文がCloudflareやOpenAIへ送られることはありません。下の「送信しない例を見る」では、端末内だけで固定の例を表示できます。</p><ol><li><strong>あなたが送信を選ぶ：</strong>正式開始後、下の同意欄にチェックし、生成ボタンを押すと、相談本文・ジャンル・選んだ3役・引き継ぎ先がCloudflareに送られます。チェックするだけでは送られません。</li><li><strong>受付が利用枠を確認する：</strong>予算や回数の上限なら、OpenAIには渡さず「今は使えません」とお知らせします。</li><li><strong>OpenAIが考える：</strong>受付できた相談をもとに、3役の言葉・短いまとめ・次のAIへ渡す質問文を作り、Cloudflareを通してこの画面へ返します。</li><li><strong>最後はあなたが決める：</strong>文章を確認してコピーし、選んだ生成AIへ自分で貼り付けて送信します。引き継ぎ先へ勝手に送ることはありません。</li></ol><p>正式開始後、相談はあなたの端末の中だけで処理されるのではなく、<strong>CloudflareとOpenAIに届きます。</strong>このアプリは相談本文や回答を保存しませんが、サービス提供会社側には安全確認などのために情報が残る場合があります。「必ず何も残らない」という意味ではありません。</p><p>Cloudflare用の会員登録は、この画面の利用には不要です。このサイトのAI費用は運営者の利用枠から使い、ここで利用者に料金を請求することはありません。引き継ぎ先の料金は、ご自身の契約によります。詳しくは<a href="#data-details">利用前に知っておくこと</a>をご確認ください。</p></div>
+<div id="sending-explanation" class="sending-explanation"><h3>相談を送ると、どうなるの？</h3><p><strong>Cloudflare（クラウドフレア）は、このサイトの受付・中継を担当するサービスです。</strong>回答を考えるAIではありません。利用できる回数や予算を確認し、受付できるときだけ相談をOpenAIへ渡します。運営者のAPIキー（AIを使うための秘密の鍵）を、公開ページに置かずに扱う役割もあります。</p><p>下の「送信しない例を見る」では、端末内だけで固定の例を表示できます。相談文はCloudflareやOpenAIへ送られません。</p><ol><li><strong>あなたが送信を選ぶ：</strong>下の同意欄にチェックし、生成ボタンを押すと、相談本文・ジャンル・選んだ3役・引き継ぎ先がCloudflareに送られます。チェックするだけでは送られません。</li><li><strong>受付が利用枠を確認する：</strong>予算や回数の上限なら、OpenAIには渡さず「今は使えません」とお知らせします。</li><li><strong>OpenAIが考える：</strong>受付できた相談をもとに、3役の言葉・短いまとめ・次のAIへ渡す質問文を作り、Cloudflareを通してこの画面へ返します。</li><li><strong>最後はあなたが決める：</strong>文章を確認してコピーし、選んだ生成AIへ自分で貼り付けて送信します。引き継ぎ先へ勝手に送ることはありません。</li></ol><p>相談はあなたの端末の中だけで処理されるのではなく、<strong>CloudflareとOpenAIに届きます。</strong>このアプリは相談本文や回答を保存しませんが、サービス提供会社側には安全確認などのために情報が残る場合があります。「必ず何も残らない」という意味ではありません。</p><p>Cloudflare用の会員登録は、この画面の利用には不要です。このサイトのAI費用は運営者の利用枠から使い、ここで利用者に料金を請求することはありません。引き継ぎ先の料金は、ご自身の契約によります。詳しくは<a href="#data-details">利用前に知っておくこと</a>をご確認ください。</p></div>
 <label class="safety-check"><input id="api-consent" type="checkbox" required aria-describedby="sending-explanation">上の説明を確認し、今回の相談と選択した内容をCloudflare（受付・中継サービス）とOpenAI（回答を考えるAI）へ送ることに同意します。</label>
 <button id="consult-submit" type="submit" class="primary-link">3役の質問・まとめと質問文をつくる <span aria-hidden="true">→</span></button>
 </fieldset>

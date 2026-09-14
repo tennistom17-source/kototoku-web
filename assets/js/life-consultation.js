@@ -12,7 +12,6 @@
   let stopped = configured && ready ? '' : 'NOT_CONFIGURED';
   const stopReasons = {
     MONTHLY_LIMIT: ['今月の運営予算・利用枠の上限に達したため、新しい相談をお休みしています。あなた個人の使いすぎではなく、サイト全体の上限です。', '翌月以降、運営者が予算を確認してから再開します。月が変わっても自動では再開しません。'],
-    DAILY_LIMIT: ['今日のサイト全体の受付数が上限に達しました。', '明日（日本時間）以降、ページを開き直してお試しください。月の予算上限などで引き続きお休みの場合もあります。'],
     BUDGET_REVIEW: ['運営者が利用料金を確認する必要があるため、新しい相談を止めています。', '確認が終わるまでお待ちください。再開時期は未定です。'],
     NOT_CONFIGURED: ['AIの接続準備、または今月の予算確認がまだ終わっていません。', '準備と確認が整うまで、新しい相談の受付はお休みです。']
   };
@@ -65,16 +64,6 @@
     for (const checkbox of checkboxes) checkbox.disabled = count >= 3 && !checkbox.checked;
     find('#selection-status').textContent = `${count} / 3人を選択中。${count === 3 ? '入れ替えるには選択を一つ外してください。' : '3人選ぶと質問文を作れます。'}`;
   }
-  function updateServiceLink() {
-    const service = services[find('#target-ai').value];
-    const link = find('#selected-ai-link');
-    const blocked = find('#urgent').checked || riskWords.test(concern.value) || !find('#safety-panel').hidden;
-    link.hidden = blocked || !service?.url;
-    if (!link.hidden) {
-      link.href = service.url;
-      link.textContent = `${service.label}を開く ↗`;
-    } else link.removeAttribute('href');
-  }
   function clearResult() {
     resultVersion += 1;
     activeService = null;
@@ -89,14 +78,12 @@
     find('#advisor-list').replaceChildren();
     for (const selector of ['#persona-summary', '#common', '#differences', '#next-step', '#form-message']) find(selector).textContent = '';
     find('#result-status').textContent = '3役の問いとまとめ、その後に生成AIへ渡す質問文を表示します。';
-    updateServiceLink();
   }
   function showSafety() {
     clearResult();
     find('#empty-result').hidden = true;
     find('#safety-panel').hidden = false;
     find('#result-status').textContent = '専門家・公的窓口への案内';
-    updateServiceLink();
   }
   function showDemo() {
     clearResult();
@@ -198,8 +185,7 @@
     if (result.code === 'SAFETY_REFERRAL') { showSafety(); return; }
     const messages = {
       MONTHLY_LIMIT: '今月のサイト全体の利用上限に達しました。受付を停止しています。',
-      DAILY_LIMIT: '本日のサイト全体の受付上限に達しました。',
-      BUSY: '現在ほかの生成を処理中、または受付間隔の制限中です。1分以上あけてください。',
+      BUSY: '現在ほかの生成を処理中、または受付間隔の制限中です。10秒ほどあけてください。',
       DUPLICATE: 'この依頼は受付済みです。自動再送はしません。',
       BUDGET_REVIEW: '費用の確認が必要になったため、受付を停止しています。',
       NOT_CONFIGURED: '現在は準備中です。AI接続または今月の予算確認が未完了のため停止しています。',
@@ -274,7 +260,7 @@
     find('#open-ai').hidden = blocked || !activeService?.url;
     if (!blocked && activeService?.url) {
       find('#open-ai').href = activeService.url;
-      find('#open-ai').textContent = `2. ${activeService.label}を開く ↗`;
+      find('#open-ai').textContent = `2. コピーした質問文で${activeService.label}を開く ↗`;
     } else find('#open-ai').removeAttribute('href');
     return !blocked;
   }
@@ -301,7 +287,6 @@
   });
   find('#input-fields').disabled = false;
   updateSelection();
-  updateServiceLink();
   updateAvailability();
   find('a[href="#data-details"]').addEventListener('click', () => { find('#data-details').open = true; });
 })();

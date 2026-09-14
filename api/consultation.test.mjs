@@ -16,11 +16,15 @@ export async function runTests() {
   const concurrent = await Promise.all(Array.from({ length: 20 }, (_, index) => reserve(ledger, String(index), now)));
   assert(concurrent.filter(value => value === null).length === 1, 'concurrent serialization');
   assert(await reserve(ledger, '0', now + 180000) === 'DUPLICATE', 'deduplication');
+  const interval = storage();
+  assert(await reserve(interval, 'first', now) === null, 'first request accepted');
+  await interval.put('gate', { until: 0, last: now, requestId: 'first' });
+  assert(await reserve(interval, 'too-soon', now + 9999) === 'BUSY', 'ten second interval blocks early request');
+  assert(await reserve(interval, 'after-interval', now + 10000) === null, 'ten second interval accepts next request');
   const monthly = storage();
   for (let index = 0; index < 100; index++) {
-    const date = now + Math.floor(index / 10) * 86400000 + index % 10 * 180000;
+    const date = now + index * 180000;
     assert(await reserve(monthly, String(index), date) === null, 'within budget');
-    if (index === 9) assert(await reserve(monthly, 'extra-day', date + 180000) === 'DAILY_LIMIT', 'daily cap');
   }
   assert(await reserve(monthly, '101', now + 11 * 86400000) === 'MONTHLY_LIMIT', 'monthly cap');
   assert((await monthly.get('2026-09')).yen === 600, 'full reservations retained');
@@ -38,6 +42,7 @@ export async function runTests() {
   const result = await generate(env, input, transport);
   assert(result.mode === 'live' && result.prompt === output.prompt, 'use actual response');
   assert(calls.length === 3 && calls[1].body.store === false && calls[1].body.max_output_tokens === 2400 && calls[1].body.input.includes(input.concern), 'bounded one generation and moderation');
+  assert(calls[1].body.instructions.includes('慎重で具体的な対話コーチ') && calls[1].body.instructions.includes('取り得る選択肢を2〜3案示し'), 'handoff prompt requirements');
   const unsafe = await generate(env, input, async () => Response.json({ results: [{ flagged: true }] }));
   assert(unsafe.code === 'SAFETY_REFERRAL', 'unsafe blocked');
   let failures = 0;
