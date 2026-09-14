@@ -8,7 +8,8 @@
   let pending = false;
   const endpoint = document.querySelector('meta[name="consultation-api"]')?.content || '';
   const configured = /^https:\/\/[^/?#]+\/consult$/.test(endpoint);
-  let stopped = configured ? '' : 'NOT_CONFIGURED';
+  const ready = document.querySelector('meta[name="consultation-ready"]')?.content === 'true';
+  let stopped = configured && ready ? '' : 'NOT_CONFIGURED';
   const stopReasons = {
     MONTHLY_LIMIT: ['今月の運営予算・利用枠の上限に達したため、新しい相談をお休みしています。あなた個人の使いすぎではなく、サイト全体の上限です。', '翌月以降、運営者が予算を確認してから再開します。月が変わっても自動では再開しません。'],
     DAILY_LIMIT: ['今日のサイト全体の受付数が上限に達しました。', '明日（日本時間）以降、ページを開き直してお試しください。月の予算上限などで引き続きお休みの場合もあります。'],
@@ -97,6 +98,46 @@
     find('#result-status').textContent = '専門家・公的窓口への案内';
     updateServiceLink();
   }
+  function showDemo() {
+    clearResult();
+    activeService = services[find('#target-ai').value] || services.other;
+    const demoAdvisors = [
+      ['優しい同年代', '迷っている気持ちを急いで結論にしなくて大丈夫です。今の自分が何を大切にしたいか、言葉にしてみましょう。', '続けたいことと、変えたいことを一つずつ挙げるとしたら何ですか？', '今日は5分だけ、気になることをメモしてみます。'],
+      ['現実的な先輩', '大きく変える前に、時間や負担を小さく見積もると続けやすくなります。', '今の生活で無理なく使えそうな時間は、週にどれくらいありますか？', '一週間だけ試せる小さな予定を一つ決めます。'],
+      ['背中を押す友人', '考え続けるだけでなく、失敗しても戻せる形で試すと新しい発見があります。', '試したあとに「合う・合わない」を何で判断しますか？', '最初の一歩を誰かに話すか、カレンダーに入れます。']
+    ];
+    demoAdvisors.forEach(([label, opinion, question, action], index) => {
+      const article = document.createElement('article');
+      article.className = 'advisor';
+      const header = document.createElement('header');
+      const symbol = document.createElement('span');
+      symbol.className = 'advisor-symbol';
+      symbol.textContent = ['A', 'B', 'C'][index];
+      symbol.setAttribute('aria-hidden', 'true');
+      const title = document.createElement('h3');
+      title.textContent = `相談役${['A', 'B', 'C'][index]} / ${label}の視点（例）`;
+      header.append(symbol, title);
+      article.append(header);
+      for (const [headingText, content] of [['考え方', opinion], ['考える問い', question], ['試すこと', action]]) {
+        const paragraph = document.createElement('p');
+        const heading = document.createElement('strong');
+        heading.textContent = `${headingText}：`;
+        paragraph.append(heading, document.createTextNode(content));
+        article.append(paragraph);
+      }
+      find('#advisor-list').append(article);
+    });
+    find('#persona-summary').textContent = 'これは端末内で表示している固定の例です。入力した相談内容は使わず、CloudflareやOpenAIへも送信しません。';
+    find('#common').textContent = '自分の気持ち、使える時間、小さく試す方法を分けて考える例です。';
+    find('#differences').textContent = '気持ちを整えること、現実的な負担を見ること、試して確かめることに着目点の違いがあります。';
+    find('#next-step').textContent = '気になっていることを一つ書き出し、無理のない短い時間で試せる形にします。';
+    find('#empty-result').hidden = true;
+    find('#answers').hidden = false;
+    find('#generated-prompt').value = `${activeService.label}へ\n\nこれは送信しない例です。自分の気持ち、使える時間、まず小さく試せることを分けて整理する質問をしてください。`;
+    updateHandoff();
+    find('#result-status').textContent = '送信しない例を表示しています。入力内容は使わず、外部へ送信していません。';
+    find('#results-title').focus();
+  }
   concern.addEventListener('input', () => {
     find('#character-count').textContent = `${concern.value.length} / 600文字`;
     concern.setCustomValidity('');
@@ -145,6 +186,10 @@
       signal: AbortSignal.timeout(70000)
     });
     const result = await response.json();
+    if (result.code === 'FORBIDDEN') {
+      stopped = 'NOT_CONFIGURED';
+      updateAvailability();
+    }
     if (Object.hasOwn(stopReasons, result.code)) {
       stopped = result.code;
       updateAvailability();
@@ -157,7 +202,8 @@
       BUSY: '現在ほかの生成を処理中、または受付間隔の制限中です。1分以上あけてください。',
       DUPLICATE: 'この依頼は受付済みです。自動再送はしません。',
       BUDGET_REVIEW: '費用の確認が必要になったため、受付を停止しています。',
-      NOT_CONFIGURED: 'AI接続または今月の予算確認が未完了のため停止しています。'
+      NOT_CONFIGURED: '現在は準備中です。AI接続または今月の予算確認が未完了のため停止しています。',
+      FORBIDDEN: '現在は準備中です。正式開始までお待ちください。'
     };
     if (!response.ok || result.mode !== 'live') throw new Error(messages[result.code] || '生成できませんでした。自動再試行や固定回答への置き換えはしません。');
     const text = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.length <= max;
@@ -216,6 +262,7 @@
     updateSelection();
     concern.focus();
   });
+  find('#demo-response').addEventListener('click', showDemo);
   window.addEventListener('pageshow', event => { if (event.persisted) find('#reset-demo').click(); });
   function isUnsafePrompt(value) {
     return riskWords.test(value);
