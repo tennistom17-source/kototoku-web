@@ -1,0 +1,46 @@
+.consultation{--care:#17644f;--rose:#974457;background:#fbfcfa}
+.consultation nav .wrap{justify-content:space-between}
+.consult-heading{padding-block:26px 20px}
+.consult-heading h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:32px;margin:6px 0;line-height:1.5}
+.consult-heading p{margin:8px 0;color:var(--muted)}
+.consult-intro{display:flex;align-items:center;gap:8px;margin:18px 0 12px;max-width:760px}.consult-intro div{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);background:#fff;font-size:13px;line-height:1.4}.consult-intro b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--care);color:#fff;font:700 12px "Bahnschrift",sans-serif;flex:none}.consult-intro i{font-style:normal;color:var(--care);font-size:18px}.consult-heading .consult-purpose{max-width:720px;color:var(--ink);font-size:15px;line-height:1.75}
+.consult-heading .demo-note{padding:12px 16px;border-left:3px solid var(--care);background:#eaf5ef;font-size:14px;color:#244e3d}
+.consult-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:36px;align-items:start;padding-bottom:24px}
+.consultation .consult-layout section{padding:0;min-width:0}
+.consultation h2{font-size:21px;margin:0 0 12px}
+.consultation h3{font-size:17px;margin:0 0 8px}
+.consultation fieldset{padding:0;margin:0;border:0;min-width:0}
+.consultation label{display:block;font-size:14px;font-weight:700;margin:10px 0 5px}
+.consultation label span{font-size:12px;color:var(--muted);font-weight:400}
+.consultation textarea,.consultation select{width:100%;min-width:0;font:inherit;font-size:16px;line-height:1.6;color:var(--ink);padding:9px 10px;border:1px solid #9caeb5;border-radius:4px;background:#fff}
+.consultation textarea{resize:vertical;min-height:130px;max-height:400px}
+.consultation :is(input,select,textarea,summary):focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.select-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}
+.select-grid .wide{grid-column:1/-1}
+.consultation .field-note,.privacy{font-size:13px;color:var(--muted);margin:8px 0;line-height:1.7}
+.consultation .safety-check{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin-block:16px;font-weight:400}
+.safety-check input{margin-top:5px;accent-color:var(--care);flex:none}
+.consultation button{font:inherit;cursor:pointer;border-radius:4px;min-height:44px}
+.consultation .primary-link{border:0;background:var(--care);gap:12px;width:100%;font-weight:700}
+.consultation button:disabled{cursor:not-allowed;opacity:.55}
+.consultation .secondary-button{background:#fff;color:var(--deep);border:1px solid #9caeb5;padding:8px 12px;margin-top:12px;font-size:14px}
+.demo-controls,.safety-details{border-top:1px solid var(--line);padding-block:12px;font-size:13px}
+.consultation summary{cursor:pointer;font-weight:700;padding:4px 0}
+.result-title{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:baseline}
+.demo-badge{font-size:12px;color:var(--rose)}
+#result-status{font-size:14px;color:var(--muted)}
+.perspective-preview{border-block:1px solid var(--line)}
+.perspective-preview>div{display:flex;gap:16px;align-items:center;padding:24px 12px;border-bottom:1px solid var(--line);font-size:14px}
+.perspective-preview span,.advisor-symbol{display:grid;place-items:center;width:38px;height:38px;flex:none;border:1px solid currentColor;border-radius:50%;color:var(--care);font-family:"Bahnschrift",sans-serif}
+.advisor{border-top:3px solid var(--care);background:#eaf5ef;padding:18px;margin:16px 0;border-radius:4px}
+.advisor:nth-child(2){border-color:var(--blue);background:#eef5ff}.advisor:nth-child(3){border-color:var(--rose);background:#fcf0f2}
+.advisor header{display:flex;align-items:center;gap:12px}.advisor h3{margin:0}.advisor p{font-size:15px;line-height:1.85;margin-bottom:0}
+.synthesis{margin:20px 0}.synthesis>div{padding:14px 0;border-top:1px solid var(--line)}
+.synthesis dt{font-weight:700;font-size:15px}.synthesis dd{margin:6px 0 0;font-size:14px}
+.synthesis .next-step{border-top:2px solid var(--care);color:#244e3d}
+.safety-panel{border-left:3px solid var(--rose);padding:16px;background:#fcf0f2;font-size:14px}
+.consult-disclaimer{font-size:13px;border-top:1px solid var(--line);padding-top:14px;color:var(--deep)}
+#form-message{color:#942a40;font-size:14px}.consult-footer{padding-block:18px;font-size:12px;color:var(--muted)}
+.consultation [hidden]{display:none!important}
+@media(max-width:800px){.consult-layout{grid-template-columns:1fr;gap:28px}.consult-heading h1{font-size:26px}.consult-heading{padding-top:20px}.consult-intro{align-items:stretch;flex-direction:column;gap:4px}.consult-intro div{min-height:42px}.consult-intro i{height:14px;text-align:center;transform:rotate(90deg)}}
+@media(prefers-reduced-motion:reduce){.consultation{scroll-behavior:auto}}
