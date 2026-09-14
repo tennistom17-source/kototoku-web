@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "maximum_recommendations": 3,
+  "review_penalty": 35,
+  "usage": {
+    "writing": {"writing": 35, "research": 10},
+    "research": {"research": 38, "writing": 12},
+    "coding": {"coding": 48, "speed": 10},
+    "image": {"image": 48, "speed": 8},
+    "video": {"video": 55, "image": 12},
+    "ideas": {"writing": 28, "research": 15, "cost_efficiency": 10}
+  },
+  "service_bonus": {
+    "writing": {"ChatGPT": 14, "Claude": 14, "Gemini": 10},
+    "research": {"Gemini": 16, "Claude": 12, "ChatGPT": 10},
+    "coding": {"GitHub Copilot": 28, "Claude": 10},
+    "image": {"Canva": 28, "Gemini": 10},
+    "video": {"Runway": 32, "Gemini": 8},
+    "ideas": {"ChatGPT": 16, "Claude": 12, "Microsoft Copilot": 6}
+  },
+  "budget": {
+    "free": {"cost_efficiency": 30, "price_limit": "無料中心"},
+    "three-thousand": {"cost_efficiency": 16, "price_limit": "月3,000円程度"},
+    "ten-thousand": {"writing": 8, "research": 8, "coding": 8, "image": 8, "video": 8, "price_limit": "月1万円程度"},
+    "flexible": {"writing": 15, "research": 15, "coding": 15, "image": 15, "video": 15, "price_limit": "品質重視で予算は柔軟"}
+  },
+  "experience": {"beginner":{"cost_efficiency":12,"speed":8},"some":{"writing":6,"research":6,"speed":6},"advanced":{"coding":18,"research":8}},
+  "priority": {"cost":{"cost_efficiency":28},"balance":{"writing":8,"research":8,"coding":8,"image":8,"video":8,"speed":8,"cost_efficiency":8},"quality":{"writing":18,"research":18,"coding":18,"image":18,"video":18},"speed":{"speed":32},"development":{"coding":36,"speed":12}},
+  "existing": {"chatgpt":{"ChatGPT":15},"github-copilot":{"GitHub Copilot":18},"canva":{"Canva":18},"none":{},"other":{}},
+  "types": {"free":"節約型","three-thousand":"バランス型","ten-thousand":"品質優先型","flexible":"品質優先型","cost":"節約型","balance":"バランス型","quality":"品質優先型","speed":"速度優先型","development":"開発集中型"}
+}
