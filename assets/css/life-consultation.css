@@ -34,6 +34,11 @@
 .example-details{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
 #copy-status{font-size:14px;color:var(--care)}
 .consultation .field-note,.privacy{font-size:13px;color:var(--muted);margin:8px 0;line-height:1.7}
+.availability-panel{border-left:4px solid var(--care);background:#eaf5ef;padding:14px 16px;margin:16px 0;font-size:14px;line-height:1.7}
+.availability-panel[data-state="stopped"]{border-color:var(--rose);background:#fcf0f2}
+.availability-panel p{margin:6px 0}.availability-panel h3{color:var(--ink)}
+.sending-explanation{border-block:1px solid var(--line);padding:16px 0;margin-top:18px;font-size:14px;line-height:1.85;overflow-wrap:anywhere}
+.sending-explanation p{margin:10px 0}.sending-explanation ol{padding-left:24px}.sending-explanation li{margin:10px 0}
 .consultation .safety-check{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin-block:16px;font-weight:400}
 .safety-check input{margin-top:5px;accent-color:var(--care);flex:none}
 .consultation button{font:inherit;cursor:pointer;border-radius:4px;min-height:44px}

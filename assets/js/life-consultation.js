@@ -5,6 +5,27 @@
   const concern = find('#concern');
   let resultVersion = 0;
   let activeService = null;
+  let pending = false;
+  const endpoint = document.querySelector('meta[name="consultation-api"]')?.content || '';
+  const configured = /^https:\/\/[^/?#]+\/consult$/.test(endpoint);
+  let stopped = configured ? '' : 'NOT_CONFIGURED';
+  const stopReasons = {
+    MONTHLY_LIMIT: ['今月の運営予算・利用枠の上限に達したため、新しい相談をお休みしています。あなた個人の使いすぎではなく、サイト全体の上限です。', '翌月以降、運営者が予算を確認してから再開します。月が変わっても自動では再開しません。'],
+    DAILY_LIMIT: ['今日のサイト全体の受付数が上限に達しました。', '明日（日本時間）以降、ページを開き直してお試しください。月の予算上限などで引き続きお休みの場合もあります。'],
+    BUDGET_REVIEW: ['運営者が利用料金を確認する必要があるため、新しい相談を止めています。', '確認が終わるまでお待ちください。再開時期は未定です。'],
+    NOT_CONFIGURED: ['AIの接続準備、または今月の予算確認がまだ終わっていません。', '準備と確認が整うまで、新しい相談の受付はお休みです。']
+  };
+  const submitLabel = find('#consult-submit').textContent;
+  function updateAvailability() {
+    const reason = stopReasons[stopped];
+    find('#availability-panel').dataset.state = reason ? 'stopped' : 'ready';
+    find('#availability-title').textContent = reason ? '今は使えません' : pending ? '相談を受け付けています' : '相談を送れます';
+    find('#availability-reason').textContent = reason ? reason[0] : pending ? 'AIが考えています。続けて送らず、そのままお待ちください。' : '同意して生成ボタンを押すと、受付時に利用枠を確認します。';
+    find('#availability-next').textContent = reason ? reason[1] : 'サイト全体の利用枠がなくなった場合は、この場所でお知らせします。';
+    find('#consult-submit').disabled = !!reason || pending;
+    find('#consult-submit').textContent = reason ? '今は使えません（受付休止中）' : pending ? 'AIが考えています…' : submitLabel;
+    find('#connection-status').textContent = reason ? `今は使えません。${reason[0]}` : '同意して送信するとOpenAIが回答を考えます。受付時に利用枠を確認します。';
+  }
   const services = {
     chatgpt: { label: 'ChatGPT', url: 'https://chatgpt.com/' },
     gemini: { label: 'Gemini', url: 'https://gemini.google.com/' },
@@ -13,41 +34,11 @@
     other: { label: 'お使いの生成AI', url: null }
   };
   const advisors = {
-    'peer-gentle': { label: '優しい同年代', focus: '自分が大切にしたい気持ち', approach: 'すぐに行動を決める前に、本当はどうしたいかを言葉にする見方です。', examples: {
-      work: ['周りの期待をいったん外すと、どの作業に納得感がありますか？', '「やりたい」と「気が重い」を一つずつ、誰にも見せないメモに書く。'],
-      relationships: ['連絡したい気持ちと、ためらう気持ちには何がありますか？', '相手の反応を予想せず、自分が伝えたい気持ちを一文だけ書く。'],
-      family: ['家族に分かってもらいたい負担は何ですか？', '自分が困る場面と、そのときの気持ちを一つ書く。'],
-      future: ['他の人と比べなければ、どちらに心が動きますか？', '気になる選択肢の好きなところを一つ書く。'],
-      feelings: ['今の気持ちに近い言葉は、焦り、寂しさ、疲れのどれでしょう？', '近い言葉を一つ選ぶ。どれも違えば、自分の言葉で短く書く。']
-    } },
-    'senior-realistic': { label: '現実的な先輩', focus: '時間と負担の調整', approach: '気合いで全部をこなすより、期限や使える時間から範囲を絞る見方です。', examples: {
-      work: ['本当に今日が期限なのはどれですか？', '作業を三つまで書き、期限と所要時間を横に添える。期限が不明なら確認事項にする。'],
-      relationships: ['今、やり取りにどれくらい時間を使えそうですか？', '返事を急がせない短い連絡文を下書きする。送るかは後で決める。'],
-      family: ['今週、一人で抱えなくてもよい用事はありますか？', '用事を一つ選び、分担を相談できる相手や手段をメモする。安全が心配なら対話を優先しない。'],
-      future: ['試すために使える時間と費用はどれくらいですか？', '無理なく使える時間と費用の上限を先に書く。'],
-      feelings: ['今日の予定で、延期できるものはありますか？', '急ぎではない用事を一つ見つけ、休める余白を考える。']
-    } },
-    'parent-longterm': { label: '長い目で見る親世代', focus: '続けられるペース', approach: '今日の成果だけでなく、しばらく続けても負担が増えないかを考える役割です。年齢による知恵の保証ではありません。', examples: {
-      work: ['今の進め方を一か月続けたら、何が負担になりそうですか？', '守りたい休憩や学ぶ時間を一つ決め、予定に残せるか考える。'],
-      relationships: ['一度の返事より、どんな距離感で付き合っていきたいですか？', '無理なく続けられる連絡の頻度を、自分の希望として書く。'],
-      family: ['一度だけ頑張る分担と、毎週続けられる分担は同じですか？', '続けると負担になる習慣を一つ書き、見直す時期を考える。'],
-      future: ['今決めても、後で見直せる余地はありますか？', '仮に試す期間と、続けるか見直す日をメモする。'],
-      feelings: ['似た気持ちは、どんな時間や場面で起きやすいですか？', '今日の気分と直前の出来事を一行だけ残す。つらさが続く場合は専門家への相談も考える。']
-    } },
-    'advisor-logical': { label: '論理的な相談役', focus: '事実と予想の区別', approach: 'まだ分からないことを結論にせず、確認できる事実と予想を分ける見方です。', examples: {
-      work: ['優先すべき理由は、期限、影響、誰かの期待のどれですか？', '候補を二つ選び、期限と後回しにした場合の影響を並べる。不明な点は不明と書く。'],
-      relationships: ['相手が実際に言ったことと、こちらの予想は分けられますか？', '「起きたこと」と「そう思った理由」を別の行に書く。'],
-      family: ['分担について合意したことと、暗黙の期待は何ですか？', '確認済みの約束と、まだ確認していない期待を分けて書く。'],
-      future: ['選択肢を比べるとき、一番大切な条件は何ですか？', '比べる条件を二つだけ決め、各選択肢の分かる点・分からない点を書く。'],
-      feelings: ['起きた出来事と、自分への評価が混ざっていませんか？', '「失敗した人間だ」などの評価ではなく、起きた出来事だけを一文で書く。']
-    } },
-    'friend-encouraging': { label: '背中を押す友人', focus: '小さく試して分かること', approach: '自信がつくのを待つ以外に、いつでもやめられる小さな試し方を探す役割です。', examples: {
-      work: ['五分だけなら、どの作業に触れられそうですか？', '候補を一つ選び、五分だけ下書きする。続けるかはその後に決める。'],
-      relationships: ['送信せずに文章を考えるだけなら、できそうですか？', '軽い近況を一文下書きし、読み返してから送るか決める。'],
-      family: ['自分だけで試せる、負担の少ない工夫はありますか？', '自分の用事の手順を一つ減らせるか試す。他の人の持ち物や予定は勝手に変えない。'],
-      future: ['契約や購入をせず、雰囲気だけ試す方法はありますか？', '気になる活動の無料の紹介や体験情報を一つ調べる。申し込みは別に判断する。'],
-      feelings: ['考え続ける以外に、今できる小さな休み方はありますか？', '楽な姿勢で少し休むなど、負担が増えないことを一つ試す。合わなければやめてよい。']
-    } }
+    'peer-gentle': { label: '優しい同年代', focus: '自分が大切にしたい気持ち' },
+    'senior-realistic': { label: '現実的な先輩', focus: '時間と負担の調整' },
+    'parent-longterm': { label: '長い目で見る親世代', focus: '続けられるペース' },
+    'advisor-logical': { label: '論理的な相談役', focus: '事実と予想の区別' },
+    'friend-encouraging': { label: '背中を押す友人', focus: '小さく試して分かること' }
   };
   const riskWords = /死にたい|自殺|自傷|消えたい|殺したい|殺す|虐待|暴力|\bDV\b|診断|薬|訴訟|法律|投資|借金|犯罪|suicid|self[- ]?harm|kill myself/i;
   for (const [key, advisor] of Object.entries(advisors)) {
@@ -73,6 +64,16 @@
     for (const checkbox of checkboxes) checkbox.disabled = count >= 3 && !checkbox.checked;
     find('#selection-status').textContent = `${count} / 3人を選択中。${count === 3 ? '入れ替えるには選択を一つ外してください。' : '3人選ぶと質問文を作れます。'}`;
   }
+  function updateServiceLink() {
+    const service = services[find('#target-ai').value];
+    const link = find('#selected-ai-link');
+    const blocked = find('#urgent').checked || riskWords.test(concern.value) || !find('#safety-panel').hidden;
+    link.hidden = blocked || !service?.url;
+    if (!link.hidden) {
+      link.href = service.url;
+      link.textContent = `${service.label}を開く ↗`;
+    } else link.removeAttribute('href');
+  }
   function clearResult() {
     resultVersion += 1;
     activeService = null;
@@ -86,13 +87,15 @@
     find('#empty-result').hidden = false;
     find('#advisor-list').replaceChildren();
     for (const selector of ['#persona-summary', '#common', '#differences', '#next-step', '#form-message']) find(selector).textContent = '';
-    find('#result-status').textContent = '質問文を作ると、ここで確認・編集できます。';
+    find('#result-status').textContent = '3役の問いとまとめ、その後に生成AIへ渡す質問文を表示します。';
+    updateServiceLink();
   }
   function showSafety() {
     clearResult();
     find('#empty-result').hidden = true;
     find('#safety-panel').hidden = false;
     find('#result-status').textContent = '専門家・公的窓口への案内';
+    updateServiceLink();
   }
   concern.addEventListener('input', () => {
     find('#character-count').textContent = `${concern.value.length} / 600文字`;
@@ -103,8 +106,9 @@
   find('#urgent').addEventListener('change', () => {
     if (find('#urgent').checked) showSafety();
   });
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
+    if (pending || stopped) return;
     clearResult();
     if (find('#urgent').checked || riskWords.test(concern.value)) {
       showSafety();
@@ -117,8 +121,9 @@
       return;
     }
     if (!form.reportValidity()) return;
+    if (!configured) { find('#form-message').textContent = 'AI接続の準備中です。固定回答では代替しません。'; return; }
+    if (!find('#api-consent').checked) { find('#form-message').textContent = '送信先とデータの取扱いを確認し、同意してください。'; return; }
     const settings = new FormData(form);
-    const genre = settings.get('genre');
     const keys = settings.getAll('advisors');
     if (keys.length !== 3 || new Set(keys).size !== 3 || keys.some(key => !advisors[key])) {
       find('#form-message').textContent = '相談役を3人選んでください。';
@@ -127,6 +132,38 @@
     const selectedAdvisors = keys.map(key => advisors[key]);
     activeService = services[settings.get('target-ai')];
     if (!activeService) return;
+    const version = resultVersion;
+    pending = true;
+    updateAvailability();
+    find('#answers').setAttribute('aria-busy', 'true');
+    find('#result-status').textContent = 'OpenAIで3役の言葉・まとめ・引き継ぎ文を生成しています。';
+    try {
+    const response = await fetch(endpoint, {
+      method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ concern: concern.value.trim(), genre: settings.get('genre'), advisors: keys, targetAI: settings.get('target-ai'), consent: true, requestId: crypto.randomUUID() }),
+      signal: AbortSignal.timeout(70000)
+    });
+    const result = await response.json();
+    if (Object.hasOwn(stopReasons, result.code)) {
+      stopped = result.code;
+      updateAvailability();
+    }
+    if (version !== resultVersion) return;
+    if (result.code === 'SAFETY_REFERRAL') { showSafety(); return; }
+    const messages = {
+      MONTHLY_LIMIT: '今月のサイト全体の利用上限に達しました。受付を停止しています。',
+      DAILY_LIMIT: '本日のサイト全体の受付上限に達しました。',
+      BUSY: '現在ほかの生成を処理中、または受付間隔の制限中です。1分以上あけてください。',
+      DUPLICATE: 'この依頼は受付済みです。自動再送はしません。',
+      BUDGET_REVIEW: '費用の確認が必要になったため、受付を停止しています。',
+      NOT_CONFIGURED: 'AI接続または今月の予算確認が未完了のため停止しています。'
+    };
+    if (!response.ok || result.mode !== 'live') throw new Error(messages[result.code] || '生成できませんでした。自動再試行や固定回答への置き換えはしません。');
+    const text = (value, max) => typeof value === 'string' && value.trim().length > 0 && value.length <= max;
+    if (result.safe !== true || !Array.isArray(result.advisors) || result.advisors.length !== 3 ||
+      !result.advisors.every((advisor, index) => advisor.id === keys[index] && text(advisor.opinion, 240) && text(advisor.question, 180) && text(advisor.action, 180)) ||
+      !text(result.common, 300) || !text(result.differences, 300) || !text(result.nextStep, 240) || !text(result.prompt, 1200)) throw new Error('生成結果の形式を確認できませんでした。回答は表示しません。');
     selectedAdvisors.forEach((advisor, index) => {
       const article = document.createElement('article');
       article.className = 'advisor';
@@ -139,8 +176,8 @@
       title.textContent = `相談役${['A', 'B', 'C'][index]} / ${advisor.label}の視点`;
       header.append(symbol, title);
       article.append(header);
-      const [question, action] = advisor.examples[genre];
-      for (const [label, content] of [['着目点', `${advisor.focus}。${advisor.approach}`], ['考える問い', question], ['試すこと', action]]) {
+      const generated = result.advisors[index];
+      for (const [label, content] of [['考え方', generated.opinion], ['考える問い', generated.question], ['試すこと', generated.action]]) {
         const text = document.createElement('p');
         const heading = document.createElement('strong');
         heading.textContent = `${label}：`;
@@ -149,17 +186,27 @@
       }
       find('#advisor-list').append(article);
     });
-    find('#persona-summary').textContent = '相談本文への回答ではなく、選んだ相談役とジャンルに応じた固定の整理例です。';
-    find('#common').textContent = 'どの例も、大きな結論を出す前に、負担の小さい確認や試行を提案しています。これは固定例の共通方針で、専門家の合意ではありません。';
-    find('#differences').textContent = selectedAdvisors.map((advisor, index) => `${['A', 'B', 'C'][index]}は「${advisor.focus}」を優先`).join('。') + '。どの視点から考えるかは、自分の状況に合わせて選べます。';
-    find('#next-step').textContent = '3つの「試すこと」から、今の自分に合うものを一つだけ選ぶ。どれも合わなければ、無理に実行しなくて構いません。';
+    find('#persona-summary').textContent = 'OpenAIが今回の相談本文に応じて生成した3つの観点です。同じAIの役割分けであり、独立した専門家の合意ではありません。';
+    find('#common').textContent = result.common;
+    find('#differences').textContent = result.differences;
+    find('#next-step').textContent = result.nextStep;
     find('#empty-result').hidden = true;
     find('#answers').hidden = false;
-    const roleText = selectedAdvisors.map((advisor, index) => `${['A', 'B', 'C'][index]}：${advisor.label}\n着目点：${advisor.focus}\n${advisor.approach}\n整理例の問い：${advisor.examples[genre][0]}\n整理例の行動：${advisor.examples[genre][1]}`).join('\n\n');
-    find('#generated-prompt').value = `${activeService.label}へ\n\n私はコトトクの「多視点相談室」で、考えを整理するための視点を選びました。答えを決めるのではなく、考えを深める手伝いをしてください。\n\n【進め方】\nまず、私の悩みについて確認したい質問を3つだけしてください。私の回答を待ってから、下記の3役の観点で、それぞれ異なる理由と選択肢を短く提示してください。最後に共通点・意見が分かれる点・今日できる小さな一歩をまとめてください。\n実在の専門家として振る舞わず、年齢や関係による決めつけを避けてください。分からない事情は推測で埋めず、最終判断は私に委ねてください。\n\n【私の悩み】\n${concern.value.trim()}\n\n【ジャンル】\n${find('#genre').selectedOptions[0].textContent}\n\n【選んだ3役と整理例】\n${roleText}\n\n【固定例に共通すること】\n${find('#common').textContent}\n\n【視点の違い】\n${find('#differences').textContent}\n\n【今日の一歩を選ぶヒント】\n${find('#next-step').textContent}\n\n【注意】\n上記の整理例はジャンル別の固定例で、私の悩みを理解して生成された回答ではありません。当てはまらない前提や提案は引き継がないでください。医療・法律・お金の重大な判断や緊急相談はAIだけで扱わず、適切な専門支援へ案内してください。`;
+    find('#generated-prompt').value = `${activeService.label}へ\n\n${result.prompt}`;
     updateHandoff();
-    find('#result-status').textContent = `${activeService.label}に渡す質問文を作りました。まだ送信していません。`;
+    find('#result-status').textContent = `OpenAIで生成しました。最後に${activeService.label}へ渡す質問文があります。引き継ぎ先にはまだ送信していません。`;
     find('#results-title').focus();
+    } catch (error) {
+      if (version === resultVersion) {
+        clearResult();
+        find('#form-message').textContent = error.name === 'TimeoutError' || error instanceof TypeError ? '通信を完了できませんでした。自動再送はしません。受付済みの場合は利用枠を消費します。' : error.message;
+        find('#result-status').textContent = 'AI回答は表示していません。';
+      }
+    } finally {
+      pending = false;
+      updateAvailability();
+      find('#answers').removeAttribute('aria-busy');
+    }
   });
   find('#reset-demo').addEventListener('click', () => {
     form.reset();
@@ -171,7 +218,7 @@
   });
   window.addEventListener('pageshow', event => { if (event.persisted) find('#reset-demo').click(); });
   function isUnsafePrompt(value) {
-    return riskWords.test(value.replace('医療・法律・お金の重大な判断や緊急相談はAIだけで扱わず、適切な専門支援へ案内してください。', ''));
+    return riskWords.test(value);
   }
   function updateHandoff() {
     const value = find('#generated-prompt').value;
@@ -180,7 +227,7 @@
     find('#open-ai').hidden = blocked || !activeService?.url;
     if (!blocked && activeService?.url) {
       find('#open-ai').href = activeService.url;
-      find('#open-ai').textContent = `${activeService.label}を開く ↗`;
+      find('#open-ai').textContent = `2. ${activeService.label}を開く ↗`;
     } else find('#open-ai').removeAttribute('href');
     return !blocked;
   }
@@ -207,4 +254,7 @@
   });
   find('#input-fields').disabled = false;
   updateSelection();
+  updateServiceLink();
+  updateAvailability();
+  find('a[href="#data-details"]').addEventListener('click', () => { find('#data-details').open = true; });
 })();
