@@ -2,14 +2,15 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="コトトク 多視点相談室。3つの視点から、軽い悩みや迷いを整理し、今日できる小さな一歩を考える無料デモです。">
-<title>コトトク 多視点相談室｜3つの視点で考えを整理する</title>
+<meta name="description" content="悩みと3つの視点をまとめて、ChatGPT・Gemini・Claudeなどに貼り付ける質問文を作る無料ツール。自動送信はしません。">
+<meta name="referrer" content="no-referrer">
+<title>コトトク 多視点相談室｜生成AIへの質問文をつくる</title>
 <link rel="icon" href="favicon.ico"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="assets/css/life-consultation.css">
 </head>
 <body class="consultation">
 <a class="skip-link" href="#main">相談画面へ移動</a>
 <nav aria-label="サイトナビゲーション"><div class="wrap"><a class="brand" href="index.html"><span class="symbol" aria-hidden="true"></span><span><b>コトトク</b><small>できるを、もっと身近に。</small></span></a><a class="text-link" href="index.html">ホームへ</a></div></nav>
-<header class="consult-heading wrap"><span class="kicker">MULTI-PERSPECTIVE DEMO</span><h1>コトトク 多視点相談室</h1><p>答えを決める場所ではなく、次の一歩を考える場所。</p><p>ひとつの悩みを、気持ち・現実条件・選択肢の3つから見直します。</p><div class="consult-intro"><div><b>1</b><span>悩みを短く書く</span></div><i aria-hidden="true">→</i><div><b>2</b><span>相談相手の雰囲気を選ぶ</span></div><i aria-hidden="true">→</i><div><b>3</b><span>3つの視点と小さな一歩を見る</span></div></div><p class="consult-purpose">コトトクは、答えを決めるAIではありません。一つの考え方に偏らず、気持ちや選択肢を整理する小さな相談室です。</p><p class="demo-note"><strong>現在は無料デモです。</strong>ジャンル別の固定例を表示します。入力内容をAIが読んで答えるものではありません。API通信・課金・入力の保存はありません。</p></header>
+<header class="consult-heading wrap"><span class="kicker">MULTI-PERSPECTIVE PROMPT</span><h1>コトトク 多視点相談室</h1><p>答えを決める場所ではなく、次の一歩を考える場所。</p><p>悩みと3つの視点をまとめて、ご自身の生成AIに聞く質問文を作ります。</p><div class="consult-intro"><div><b>1</b><span>悩み・3役・生成AIを選ぶ</span></div><i aria-hidden="true">→</i><div><b>2</b><span>質問文を確認してコピー</span></div><i aria-hidden="true">→</i><div><b>3</b><span>自分の生成AIに貼り付ける</span></div></div><p class="demo-note"><strong>質問文づくりは無料・API不要です。</strong>ここでAIの回答は生成しません。入力の自動送信・保存は行いません。コピーや貼り付けは、ご自身の操作で行います。</p></header>
 <main id="main" class="wrap">
 <div class="consult-layout">
 <section class="consult-input" aria-labelledby="input-title"><h2 id="input-title">相談を整理する</h2>
@@ -19,33 +20,32 @@
 <label for="concern">悩み <span>必須・最大600文字</span></label>
 <textarea id="concern" name="concern" rows="5" maxlength="600" required aria-describedby="character-count" placeholder="例：今の仕事を続けるか、新しいことに挑戦するか迷っています。"></textarea>
 <p id="character-count" class="field-note">0 / 600文字</p>
-<div class="select-grid">
-<div><label for="genre">相談ジャンル</label><select id="genre" name="genre"><option value="work">仕事</option><option value="relationships">人間関係</option><option value="family">家族</option><option value="future">将来</option><option value="feelings">気持ちの整理</option></select></div>
-<div><label for="age">相談相手の年齢</label><select id="age" name="age"><option>20代</option><option selected>30代</option><option>40代</option><option>50代</option><option>60代以上</option></select></div>
-<div><label for="gender">性別</label><select id="gender" name="gender"><option>男性</option><option>女性</option><option selected>指定しない</option></select></div>
-<div><label for="relation">関係</label><select id="relation" name="relation"><option>友人</option><option>先輩</option><option>親世代</option><option>同年代</option><option>キャリア相談役</option></select></div>
-<div class="wide"><label for="tone">話し方</label><select id="tone" name="tone"><option>優しい</option><option>現実的</option><option>率直</option><option>論理的</option><option>背中を押す</option></select></div>
-</div>
-<p class="field-note">人物像は3人共通の設定です。年齢・性別で意見を決めつけず、Aは気持ち、Bは現実条件、Cは選択肢に注目します。</p>
-<label class="safety-check"><input id="urgent" type="checkbox">自分や誰かの安全が心配、または医療・法律に関する相談です</label>
-<button id="consult-submit" type="submit" class="primary-link">3人に相談する <span aria-hidden="true">→</span></button>
+<div class="select-grid"><div class="wide"><label for="genre">相談ジャンル</label><select id="genre" name="genre"><option value="work">仕事</option><option value="relationships">人間関係</option><option value="family">家族</option><option value="future">将来</option><option value="feelings">気持ちの整理</option></select></div></div>
+<fieldset class="advisor-settings" aria-describedby="selection-status"><legend>相談役を3人選ぶ</legend><div id="advisor-options" class="advisor-options"></div><p id="selection-status" class="field-note" role="status"></p></fieldset>
+<p class="field-note">相談役は生成AIにお願いする架空の役割です。年齢や関係が意見の正しさを保証するものではありません。</p>
+<label for="target-ai">質問文を使う生成AI</label><select id="target-ai" name="target-ai"><option value="chatgpt">ChatGPT（チャッピー）</option><option value="gemini">Gemini</option><option value="claude">Claude</option><option value="copilot">Microsoft Copilot</option><option value="other">その他の生成AI（汎用）</option></select>
+<p class="field-note">質問文は各サービスで使える共通形式です。生成AIの選択で渡す相手の表記と移動先が変わります。</p>
+<label class="safety-check"><input id="urgent" type="checkbox">安全が心配、または医療・法律・投資・借金など重大な判断に関する相談です</label>
+<button id="consult-submit" type="submit" class="primary-link">生成AIへの質問文をつくる <span aria-hidden="true">→</span></button>
 </fieldset>
 <p id="form-message" role="alert"></p>
 </form>
 <noscript><p>JavaScriptが無効なため入力は停止しています。相談内容は送信されません。</p></noscript>
-<p id="quota-status" class="field-note" role="status"></p>
-<details class="demo-controls"><summary>試作の状態確認</summary><label for="demo-state">受付状態</label><select id="demo-state"><option value="ready">受付中（デモ3回まで）</option><option value="limit">月間上限に到達</option><option value="error">接続エラー</option></select><button type="button" id="reset-demo" class="secondary-button">入力とデモ回数をリセット</button><p class="field-note">デモ回数はこのページを開いている間だけのものです。本番の月間制限ではありません。</p></details>
+<button type="button" id="reset-demo" class="secondary-button">入力と質問文を消す</button>
+<p class="field-note">このページの質問文作成に回数制限はありません。移動先の生成AIの利用条件・料金・データの取扱いは、各サービスに従います。</p>
 </section>
-<section class="consult-results" aria-labelledby="results-title"><div class="result-title"><h2 id="results-title" tabindex="-1">3つの視点</h2><span class="demo-badge">固定のデモ回答</span></div>
-<p id="result-status" role="status">相談後に、3人の意見と整理の例を表示します。</p>
-<div id="empty-result" class="perspective-preview" aria-hidden="true"><div><span>A</span><b>気持ちを受け止める</b></div><div><span>B</span><b>現実の条件を整理する</b></div><div><span>C</span><b>別の選択肢を探す</b></div></div>
-<div id="safety-panel" class="safety-panel" role="alert" hidden><h3>ここでは通常の回答を表示しません</h3><p>差し迫った危険がある場合は、この画面の回答を待たず、安全な場所へ移動し、近くの信頼できる人や緊急窓口へ連絡してください。</p><p>日本国内の緊急時は救急・消防119、警察110。日本以外では現地の緊急番号を利用してください。</p><p>医療の判断は医療機関へ、法律の判断は弁護士・公的相談窓口へ。つらい気持ちは一人で抱えず、身近な人や地域の相談窓口に伝えてください。</p></div>
-<div id="answers" hidden><p id="persona-summary" class="field-note"></p><div id="advisor-list"></div><dl class="synthesis"><div><dt>3人の共通点</dt><dd id="common"></dd></div><div><dt>意見が分かれる点</dt><dd id="differences"></dd></div><div class="next-step"><dt>今日できる小さな一歩</dt><dd id="next-step"></dd></div></dl></div>
-<p class="consult-disclaimer">これはAIによる多角的な視点です。医療・法律・緊急の安全に関する相談は専門家・公的窓口へ相談してください</p><p class="field-note">実接続後も、3人は実在の専門家ではなく、同じAIが演じ分ける役割です。多数決や正解ではありません。最終判断は利用者が行います。現在の表示はAI生成ではなく固定例です。</p>
+<section class="consult-results" aria-labelledby="results-title"><div class="result-title"><h2 id="results-title" tabindex="-1">生成AIに渡す質問文</h2><span class="demo-badge">自動送信なし</span></div>
+<p id="result-status" role="status">質問文を作ると、ここで確認・編集できます。</p>
+<div id="empty-result" class="perspective-preview" aria-hidden="true"><div><span>A</span><b>1人目の着目点・問い・試すこと</b></div><div><span>B</span><b>2人目の着目点・問い・試すこと</b></div><div><span>C</span><b>3人目の着目点・問い・試すこと</b></div></div>
+<div id="safety-panel" class="safety-panel" role="alert" hidden><h3>この相談は専門の支援につなげてください</h3><p>この場だけで抱え込まず、身近で信頼できる人、専門の相談窓口、医療機関などに相談してください。緊急の危険がある場合は、地域の緊急窓口へ連絡してください。</p><p>重大な医療・法律・お金の判断や、未成年者の深刻な悩みは対象外です。通常の質問文や生成AIへのリンクは表示しません。</p></div>
+<div id="answers" hidden>
+<div class="prompt-handoff"><label for="generated-prompt">質問文（コピー前に編集できます）</label><textarea id="generated-prompt" rows="16" spellcheck="false" autocomplete="off" aria-describedby="handoff-note"></textarea><p id="handoff-note" class="field-note">個人情報や秘密がないか確認してください。コピーした文章は端末のクリップボードに入り、OSの設定によって履歴・同期の対象になる場合があります。</p><div class="handoff-actions"><button type="button" id="copy-prompt" class="secondary-button">質問文をコピー</button><a id="open-ai" class="secondary-button" target="_blank" rel="noopener noreferrer" hidden></a></div><p id="copy-status" role="status"></p><p class="field-note">ご自身の生成AIを開き、コピーした文章を自分で貼り付けて送信してください。コトトクから運営者個人のChatGPTへ送られることはありません。ChatGPTの個人会話履歴と、このページの入力は別のものです。</p></div>
+<details class="example-details"><summary>質問文に添えた3役の整理例を見る</summary><p id="persona-summary" class="field-note"></p><div id="advisor-list"></div><dl class="synthesis"><div><dt>3人の共通点</dt><dd id="common"></dd></div><div><dt>意見が分かれる点</dt><dd id="differences"></dd></div><div class="next-step"><dt>今日できる小さな一歩</dt><dd id="next-step"></dd></div></dl></details></div>
+<p class="consult-disclaimer">軽い迷いや日常の整理のための質問文です。医療・法律・緊急の安全に関する相談は専門家・公的窓口へ相談してください。</p><p class="field-note">3役は同じ生成AIにお願いする観点であり、独立した専門家の合意ではありません。回答には誤りや偏りがあり得ます。最終判断は利用者が行います。</p>
 </section>
 </div>
-<details class="safety-details"><summary>利用前に知っておくこと</summary><p>この試作では、入力を外部に送信せず、ブラウザの保存領域にも記録しません。実接続時には相談本文と選択設定がサーバーとOpenAI APIへ送られます。接続前に、取扱い・保存期間・同意表示を別途確認します。</p><p>デモの危険語チェックは限定的で、危険な相談を確実に見分けるものではありません。通常の回答例が出ても、安全と判断されたことにはなりません。</p></details>
+<details class="safety-details"><summary>利用前に知っておくこと</summary><p>質問文はブラウザ内のテンプレートで作ります。選んだ生成AIへ貼り付けて送信するまでは、そのサービスへ相談本文を送りません。リンクを開くだけでも移動先には通常のアクセス情報が伝わります。</p><p>入力や質問文をアプリの保存領域に記録しませんが、端末・ブラウザやコピー先の履歴まで消す機能ではありません。各生成AIの保存・学習設定を確認し、秘密や個人情報は貼り付けないでください。</p><p>危険語チェックは限定的で、検出漏れ・過剰検出があります。質問文が作れても、安全と判断されたことにはなりません。</p></details>
 </main>
-<footer><div class="wrap consult-footer">© 2026 コトトク / 無料デモ・API未接続</div></footer>
+<footer><div class="wrap consult-footer">© 2026 コトトク / 無料の質問文作成ツール・API未接続</div></footer>
 <script src="assets/js/life-consultation.js" defer></script>
 </body></html>

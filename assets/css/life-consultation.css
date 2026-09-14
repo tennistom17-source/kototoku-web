@@ -17,6 +17,22 @@
 .consultation :is(input,select,textarea,summary):focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .select-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}
 .select-grid .wide{grid-column:1/-1}
+.consultation .advisor-settings{margin-top:18px}
+.advisor-settings legend{color:var(--deep);font-size:15px;font-weight:700}
+.advisor-options{display:grid;gap:8px;margin-top:10px}
+.consultation .advisor-choice{display:flex;align-items:center;gap:12px;margin:0;padding:12px;border:1px solid #9caeb5;border-radius:4px;background:#fff;min-height:68px;cursor:pointer}
+.consultation .advisor-choice:has(:checked){border-color:var(--care);background:#eaf5ef}
+.consultation .advisor-choice:has(:disabled){color:var(--muted);background:#f3f5f6;cursor:not-allowed}
+.advisor-choice input{accent-color:var(--care);width:18px;height:18px;flex:none}
+.consultation .advisor-choice span{min-width:0;color:var(--ink);font-size:14px}
+.advisor-choice b,.advisor-choice small{display:block}
+.advisor-choice small{font-size:12px;color:var(--muted)}
+.consultation #generated-prompt{min-height:300px;height:420px;max-height:650px;font-size:14px;line-height:1.8}
+.handoff-actions{display:flex;flex-wrap:wrap;gap:10px}
+.handoff-actions .secondary-button{display:inline-flex;align-items:center;min-height:44px;border-radius:4px;text-decoration:none}
+.consultation :is(button,a):focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.example-details{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}
+#copy-status{font-size:14px;color:var(--care)}
 .consultation .field-note,.privacy{font-size:13px;color:var(--muted);margin:8px 0;line-height:1.7}
 .consultation .safety-check{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin-block:16px;font-weight:400}
 .safety-check input{margin-top:5px;accent-color:var(--care);flex:none}
