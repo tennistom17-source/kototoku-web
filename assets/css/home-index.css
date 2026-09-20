@@ -20,6 +20,9 @@
 .home-index .recommended-tool .tool-label{display:block;margin-bottom:6px;color:#17644f;font-size:12px}
 .home-index .recommended-tool strong{margin-bottom:4px}
 .home-index .recommended-tool .tool-action{display:block;margin-top:10px;color:var(--blue);font-size:14px;font-weight:700}
+.home-index .directory-list .movie-lab-entry a{padding:14px 12px;border-left:4px solid var(--blue);background:#eef5ff}
+.home-index .movie-lab-entry .tool-label{display:block;margin-bottom:5px;color:var(--blue);font-size:11px}
+.home-index .movie-lab-entry .tool-action{display:block;margin-top:8px;color:var(--blue);font-size:13px;font-weight:700}
 .home-index .directory-list a:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .home-index .index-film{margin:0}
 .home-index .index-film video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#18232d;border-radius:4px}
