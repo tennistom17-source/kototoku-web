@@ -51,7 +51,7 @@ var KOTOTOKU_SOCIAL_LINKS = [
       indexHeader.insertAdjacentElement('afterend', follow);
     }
 
-    document.querySelectorAll('footer').forEach(function(footer){
+    document.querySelectorAll('footer:not([data-brand-footer])').forEach(function(footer){
       var footerBottom = footer.querySelector('.footer-bottom');
       var social = document.createElement('div');
       social.className = footerBottom ? 'wrap footer-social' : 'footer-social compact-footer-social';

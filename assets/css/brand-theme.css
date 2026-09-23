@@ -1,0 +1,87 @@
+/* Kototoku's shared visual language. Loaded last on every public page. */
+body.brand-unified{--blue:#17675e;--deep:#193e38;--sky:#ecf5ef;--ink:#293e37;--muted:#5d7067;--line:#dce4da;--soft:#f5f6ef;--white:#fffefa;--paper:#fffefa;--bg:#faf7ef;background:#faf7ef;color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.8;margin:0;}
+.brand-unified *{box-sizing:border-box}
+.brand-unified a:focus-visible,.brand-unified button:focus-visible,.brand-unified input:focus-visible,.brand-unified textarea:focus-visible,.brand-unified select:focus-visible,.brand-unified summary:focus-visible{outline:3px solid #ad5a39;outline-offset:4px}
+.brand-unified h1,.brand-unified h2,.brand-unified h3{color:#193e38;letter-spacing:.01em}
+.brand-unified h1{font-size:clamp(1.65rem,3.3vw,2.75rem);line-height:1.5;overflow-wrap:anywhere}
+.brand-unified .wrap{width:min(1160px,calc(100% - 48px))}
+.brand-unified section{scroll-margin-top:105px}
+.brand-unified button,.brand-unified input,.brand-unified textarea,.brand-unified select{font:inherit}
+.brand-unified button{touch-action:manipulation}
+.brand-unified button:disabled{opacity:.55;cursor:wait}
+.brand-unified .brand-nav{position:sticky;top:0;z-index:50;background:#fffefaed;backdrop-filter:blur(12px);border-bottom:1px solid #dde3d8;padding:0;width:100%;margin:0}
+.brand-nav-inner{width:min(1240px,calc(100% - 48px));min-height:86px;margin:auto;display:flex;align-items:center;gap:28px}
+.brand-unified .brand-logo{display:inline-flex;gap:10px;align-items:center;color:#193e38;text-decoration:none;font-size:24px;font-weight:850;white-space:nowrap;line-height:1.4}
+.brand-logo small{display:block;font-size:10px;font-weight:600;letter-spacing:.07em;color:#617064}
+.brand-emblem{display:grid;place-items:center;width:42px;height:42px;background:#f3ccbd;color:#193e38;border-radius:15px 15px 15px 4px;font-size:30px;transform:rotate(-5deg)}
+.brand-links{margin-left:auto;display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.brand-unified .brand-links a{color:#40594e;display:block;padding:10px 15px;border-radius:100px;font-size:14px;font-weight:700;white-space:nowrap;text-decoration:none;transition:background .15s}
+.brand-unified .brand-links a:hover{background:#f1eadf}
+.brand-unified .brand-links a[aria-current]{background:#1b6055;color:#fff}
+.brand-unified .brand-menu{display:none;border:1px solid #cfdacd;border-radius:12px;background:#fffefa;color:#244d41;min-height:44px;padding:8px 13px;font-size:13px;font-weight:700;margin-left:auto}
+.brand-skip{position:absolute;top:0;left:-9999px;z-index:100;background:#fff;padding:12px}
+.brand-skip:focus{left:12px}
+.brand-unified .brand-hero{background:#faf7ef;border:0;padding:38px 0 32px;max-width:none;width:auto;margin:0}
+.brand-hero-grid{width:min(1160px,calc(100% - 48px));margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.57fr);gap:42px;align-items:center}
+.brand-hero-copy{min-width:0}
+.brand-unified .brand-hero-copy>.wrap{width:auto;margin:0}
+.brand-unified .brand-hero p{font-size:15px;max-width:72ch;color:#5b6d63}
+.brand-unified .brand-hero h1{margin:12px 0 18px}
+.brand-page-art{margin:0;position:relative;align-self:center;transform:rotate(2deg)}
+.brand-page-art img{display:block;width:100%;height:auto;border-radius:44% 44% 24px 24px;box-shadow:0 14px 30px #27483912;border:6px solid #fffefa}
+.brand-page-art figcaption{position:relative;margin:-10px auto 0;padding:8px 12px;width:fit-content;max-width:95%;border-radius:30px;background:#fffefa;color:#365247;font-size:12px;font-weight:700;box-shadow:0 4px 18px #27483914;transform:rotate(-2deg)}
+.brand-unified .index-header{background:#faf7ef}
+.brand-unified .hero-illustration img{border-radius:34px 80px 34px 34px}
+.brand-unified .home-ribbon{background:#e8eee0;border-color:#dce4d4;color:#345146}
+.brand-unified .kicker{color:#35776a;letter-spacing:.09em}
+.brand-unified .page-hero,.brand-unified .tool-hero{border-bottom:0}
+.brand-unified .movie-hero{background:#faf7ef;color:#293e37;border-color:#dce4da}
+.brand-unified .movie-catch{color:#22584b}
+.brand-unified .hero-media{border:0;border-radius:32px;background:#fae9de url('../images/kototoku-creative-team.webp') center/cover}
+.brand-unified .hero-media>div{background:#fffefae8;border-radius:20px;margin:20px;padding:20px;color:#244d41}
+.brand-unified .hero-media b,.brand-unified .hero-media small{color:#244d41}
+.brand-unified .primary-link,.brand-unified .primary-button,.brand-unified .pill-button,.brand-unified .primary{background:#1b6055;color:#fff;border-color:#1b6055;border-radius:100px;min-height:44px}
+.brand-unified .pill-button.secondary,.brand-unified .movie-secondary-link{background:#fffefa;color:#225c50;border:1px solid #bbcfc2;border-radius:100px;min-height:44px}
+.brand-unified .linkcard,.brand-unified .card,.brand-unified .post,.brand-unified .tool-panel,.brand-unified .tool-card,.brand-unified .faq-item,.brand-unified .room,.brand-unified .compare-panel,.brand-unified .translator-panel,.brand-unified .consult-panel{border-color:#dce4da;border-radius:20px;background:#fffefa}
+.brand-unified .linkcard:hover{background:#f0f5e9;border-color:#b7cbb9}
+.brand-unified input:not([type=range]):not([type=checkbox]):not([type=radio]),.brand-unified textarea,.brand-unified select{border-color:#bdcfc2;border-radius:10px;color:#263e32;background:#fffefa}
+.brand-unified .execution-stage,.brand-unified .execution-card,.brand-unified .impact-card{border-color:#dce4da;border-radius:18px}
+.brand-unified .brand-footer{background:#edf1e6;color:#304c40;margin:60px 0 0;padding:44px 0 0;border-top:1px solid #d4dece;width:100%;max-width:none;font-size:14px}
+.brand-footer-inner{width:min(1160px,calc(100% - 48px));margin:auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:44px}
+.brand-footer-intro p{font-size:16px;font-weight:700;line-height:1.9}
+.brand-footer-intro small{font-size:12px;color:#596c60;line-height:1.8}
+.brand-unified .brand-footer h2{font-size:13px;margin:4px 0 15px;letter-spacing:.05em;color:#617064}
+.brand-footer-inner>div>a:not(.brand-logo){display:block;padding:5px 0;color:#244d41;text-decoration:none}
+.brand-footer a:hover{text-decoration:underline}
+.brand-social{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.brand-unified .brand-social a{display:block;border:1px solid #c5d3c2;padding:4px 10px;border-radius:100px;font-size:12px;background:#fffefa;color:#345247;text-decoration:none}
+.brand-footer-bottom{width:min(1160px,calc(100% - 48px));margin:30px auto 0;border-top:1px solid #cdd8c8;padding:17px 0;font-size:12px;display:flex;justify-content:space-between;gap:16px}
+.brand-unified .brand-footer-bottom a{color:#345247}
+@media(max-width:1000px){.brand-nav-inner{gap:12px}.brand-unified .brand-links a{padding:9px 10px;font-size:13px}.brand-hero-grid{gap:26px;grid-template-columns:minmax(0,1fr) 260px}}
+@media(max-width:760px){
+.brand-unified .wrap,.brand-nav-inner,.brand-hero-grid,.brand-footer-inner,.brand-footer-bottom{width:calc(100% - 32px)}
+.brand-nav-inner{min-height:74px;flex-wrap:wrap;padding:10px 0;gap:10px}
+.brand-unified .brand-logo{font-size:21px}.brand-emblem{width:36px;height:36px;font-size:26px}
+.brand-links{width:100%;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding-bottom:7px}
+.brand-unified .brand-links a{text-align:center;padding:10px 3px;font-size:12px}
+.brand-nav.menu-enhanced .brand-menu{display:block}.brand-nav.menu-enhanced .brand-links{display:none}.brand-nav.menu-enhanced .brand-links.is-open{display:grid}
+.brand-hero-grid{grid-template-columns:1fr;gap:22px}.brand-unified .brand-hero{padding:24px 0}.brand-page-art{width:min(310px,80%);justify-self:center}.brand-page-art img{border-radius:28px}
+.brand-unified .brand-hero h1{font-size:1.65rem}.brand-footer-inner{grid-template-columns:1fr 1fr;gap:26px}.brand-footer-intro{grid-column:1/-1}.brand-unified .brand-footer{margin-top:36px}.brand-footer-bottom{align-items:start}
+}
+@media(prefers-reduced-motion:reduce){.brand-unified *{scroll-behavior:auto!important;transition:none!important}}
+/* Bring the former dark company presentation into the same light palette. */
+body.brand-unified.execution-page{--exec-blue:#236858;--exec-deep:#234b3c;--exec-teal:#357968;--exec-sky:#edf3e7;--impact-bg:#f1f3e8;--impact-panel:#fffefa;--impact-line:#cad8c6;--impact-text:#2e493c;--impact-muted:#5e7064;--impact-teal:#276b57;--impact-blue:#34766b;--impact-gold:#906322;--impact-green:#3c774e}
+.brand-unified :is(h1,h2,h3){font-family:inherit}
+.brand-unified .impact-section{background:#edf2e5;color:#2e493c;padding:56px 0}
+.brand-unified .impact-section :is(p,li,small,figcaption,time,span,strong){color:#405d4c}
+.brand-unified .impact-section :is(h2,h3){color:#234b3c;font-family:inherit}
+.brand-unified :is(.execution-experience,.live-execution,.generic-ai,.kototoku-ai,.experience-flow li,.impact-cockpit-figure .cockpit-notes li){background:#fffefa;color:#2e493c;border-color:#cbd9c7;box-shadow:none;border-radius:18px}
+.brand-unified .experience-flow .execution-step{background:#dfecda;border-color:#93b997;color:#214f35;box-shadow:none}
+.brand-unified .impact-section .impact-eyebrow{border-color:#d4c290;background:#fff3d8;color:#70531c;border-radius:20px;padding:5px 12px}
+.brand-unified .impact-cta{background:#e6eee0;color:#254b3c;padding:52px 0}
+.brand-unified .impact-cta :is(h2,p,small){color:#254b3c;font-family:inherit}
+.brand-unified .impact-cta a{background:#235e4d;color:#fff;border-radius:100px}
+.brand-unified .system-section:nth-of-type(even){background:#f0f3e9;border-color:#dce4da}
+body.brand-unified :is(h1,h2,h3){font-family:inherit;color:#234b3c}
+.brand-unified .chip.selected,.brand-unified .diary-filters button[aria-pressed="true"]{background:#e0eddb;border-color:#85a98d;color:#245539;box-shadow:none}
+@media(max-width:760px){.model-tool .brand-page-art,.prompt-tool .brand-page-art,.consultation .brand-page-art{width:220px}}
