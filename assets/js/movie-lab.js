@@ -5,7 +5,7 @@ const KOTOTOKU_VIDEOS = [
     episode: "動画制作・第1弾",
     description: "コトトクの5人が、みんなの困りごとの解決に挑む最初の映像作品です。",
     thumbnail: "",
-    videoUrl: "assets/videos/kototoku-movie-01.mp4",
+    videoUrl: "images/movie/kototoku-movie-01.mp4",
     instagramUrl: "",
     diaryUrl: "",
     promptUrl: "",
