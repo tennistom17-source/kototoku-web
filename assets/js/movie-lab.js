@@ -105,9 +105,10 @@ const KOTOTOKU_INSTAGRAM_URL = "";
     return link;
   }
 
-  function renderVideos() {
+  function renderVideos(videos) {
     const list = find("#video-list");
-    KOTOTOKU_VIDEOS.forEach(video => {
+    list.replaceChildren();
+    videos.forEach(video => {
       const card = makeElement("article", "video-card");
       card.id = video.id;
       card.append(makeElement("span", "video-episode", video.episode), makeElement("h3", "", video.title), mediaFor(video), makeElement("p", "", video.description));
@@ -125,17 +126,34 @@ const KOTOTOKU_INSTAGRAM_URL = "";
       if (links.length) card.append(actions);
       list.append(card);
     });
-    const latest = KOTOTOKU_VIDEOS.find(video => video.videoUrl || video.thumbnail);
-    if (latest?.thumbnail) {
+    const latest = videos.find(video => video.videoUrl || video.thumbnail);
+    if (latest) {
       const hero = find(".hero-media");
-      const image = document.createElement("img");
-      image.src = latest.thumbnail;
-      image.alt = `${latest.title}のサムネイル`;
-      image.loading = "lazy";
-      image.width = 720;
-      image.height = 1280;
-      hero.replaceChildren(image);
+      const content = mediaFor(latest);
+      hero.replaceChildren(...content.childNodes);
       hero.setAttribute("aria-label", `${latest.title}の最新動画`);
+    }
+  }
+
+  async function loadApprovedVideos() {
+    try {
+      const response = await fetch("assets/publications/videos.json", { cache: "no-store" });
+      if (!response.ok) return;
+      const entries = await response.json();
+      if (!Array.isArray(entries)) return;
+      const approved = entries.filter(item =>
+        item && /^PUB-[A-Z0-9-]+$/.test(item.id) &&
+        /^assets\/publications\/PUB-[A-Z0-9-]+\/media-[1-4]\.mp4$/.test(item.videoUrl) &&
+        item.videoUrl.includes(`/${item.id}/`) &&
+        typeof item.title === "string" && typeof item.description === "string"
+      ).map(item => ({
+        id: item.id, title: item.title, description: item.description,
+        episode: "新着動画", thumbnail: "", videoUrl: item.videoUrl,
+        instagramUrl: "", diaryUrl: "", promptUrl: "", tags: ["コトトク", "AI動画"]
+      }));
+      renderVideos([...approved, ...KOTOTOKU_VIDEOS]);
+    } catch {
+      // Keep the existing videos visible if the catalog is temporarily unavailable.
     }
   }
 
@@ -194,7 +212,8 @@ const KOTOTOKU_INSTAGRAM_URL = "";
 
   document.querySelectorAll(".tracked-tool").forEach(link => link.addEventListener("click", () => track("movie_tool_click", { link_url: link.href })));
   document.querySelectorAll('a[href="#production-diary"]').forEach(link => link.addEventListener("click", () => track("movie_diary_click", { link_url: link.href })));
-  renderVideos();
+  renderVideos(KOTOTOKU_VIDEOS);
+  loadApprovedVideos();
   renderPoll();
   renderInstagram();
 })();
