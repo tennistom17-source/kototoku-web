@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://tennistom17-source.github.io/kototoku-web/sitemap.xml
