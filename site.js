@@ -4,7 +4,7 @@ var KOTOTOKU_SOCIAL_LINKS = [
   { name: 'Threads', url: 'https://www.threads.com/@kototoku17?hl=ja', icon: 'threads' },
   { name: 'note', url: 'https://note.com/firm_broom4032', icon: 'note' },
   { name: 'X', url: 'https://x.com/kototoku123', icon: 'x' },
-  { name: 'TikTok', url: 'https://www.tiktok.com/@kototoku17', icon: 'tiktok' }
+  { name: 'TikTok', url: '', icon: 'tiktok' }
 ];
 
 (function(){
@@ -53,9 +53,10 @@ var KOTOTOKU_SOCIAL_LINKS = [
       indexHeader.insertAdjacentElement('afterend', follow);
     }
 
-    document.querySelectorAll('.brand-social').forEach(function(social){
+    var tiktok = KOTOTOKU_SOCIAL_LINKS.find(function(link){ return link.icon === 'tiktok' && link.url.trim(); });
+    if (tiktok) document.querySelectorAll('.brand-social').forEach(function(social){
       var link = document.createElement('a');
-      link.href = 'https://www.tiktok.com/@kototoku17';
+      link.href = tiktok.url;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
       link.textContent = 'TikTok ↗';
