@@ -4,7 +4,7 @@ var KOTOTOKU_SOCIAL_LINKS = [
   { name: 'Threads', url: 'https://www.threads.com/@kototoku17?hl=ja', icon: 'threads' },
   { name: 'note', url: 'https://note.com/firm_broom4032', icon: 'note' },
   { name: 'X', url: 'https://x.com/kototoku123', icon: 'x' },
-  { name: 'TikTok', url: '', icon: 'tiktok' }
+  { name: 'TikTok', url: 'https://www.tiktok.com/@kototoku_official', icon: 'tiktok' }
 ];
 
 (function(){
