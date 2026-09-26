@@ -3,7 +3,7 @@
   "short_name": "コトトク",
   "icons": [
     {
-      "src": "images/icon/favicon.png",
+      "src": "images/icon/favicon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
@@ -16,5 +16,5 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0649a9"
+  "theme_color": "#193e38"
 }
